@@ -32,8 +32,9 @@ class shift_clip(nn.Module):
         self.clip = out_bound
 
     def forward(self, x):
+        x = x.to(torch.int32)
         x = x >> self.shift
-        out = torch.clamp(x, -(self.clip+1), self.clip)
+        out = torch.clamp(x, -(self.clip+1), self.clip).to(torch.float32)
         return out
 
 class Layer(object):
