@@ -19,6 +19,7 @@
 
 #include "pmsis.h"
 #include "pulp_nn_utils.h"
+## utility for the template
 <%
 act_prec = int(config.kernel.act_prec[0:2])
 act_t = f"int{act_prec}_t"
@@ -53,6 +54,7 @@ void ${config.fn_name}(
                         uint8_t flag_relu,
                         uint8_t flag_batch_norm)
 {
+## set upd the masks for sub-byte bit packing
 %if config.kernel.out_data_t == 2:
     int8_t mask2 = 0x0c;
     int8_t n_mask2 = ~ mask2;
@@ -68,6 +70,7 @@ void ${config.fn_name}(
     int8_t n_mask = ~ mask;
     int8_t off = 0x04;
 %endif
+## dimension of the input vector
 %if config.kernel.in_data_t == 8:
     uint16_t dim_vec_in = dim_vec;
 %elif config.kernel.in_data_t == 4:
@@ -75,6 +78,7 @@ void ${config.fn_name}(
 %elif config.kernel.in_data_t == 2:
     uint16_t dim_vec_in = dim_vec >> 2;
 %endif
+## dimension of the weight vector
 %if config.kernel.wt_data_t == 8:
     uint16_t dim_vec_wt = dim_vec;
 %elif config.kernel.wt_data_t == 4:
@@ -83,6 +87,7 @@ void ${config.fn_name}(
     uint16_t dim_vec_wt = dim_vec >> 2;
 %endif
 
+## handle load distribution on the cluster
     int core_id = pi_core_id();
     int Log2Core = log2(NUM_CORES);
     int chunk = (num_o_neurons >> Log2Core) + ((num_o_neurons & (NUM_CORES-1))!=0);
@@ -102,6 +107,7 @@ void ${config.fn_name}(
     int stop = min(start + chunk + neuron_left, num_o_neurons);
 %endif
 
+## declares the vector variables used to hold those packed/unpacked values during computation
 %if config.less_precision == 8:
     ${vt_in} vecA;
     v4s vecB;
@@ -128,6 +134,7 @@ void ${config.fn_name}(
 %endif
 %endif
 
+## handle output buffer
 %if config.kernel.out_data_t == 8:
     ${pt_out} *pOutBuffer = (${pt_out} *) pOut + start;
     int lft_neurons = chunk & 0x01;
@@ -138,10 +145,12 @@ void ${config.fn_name}(
     ${pt_out} *pOutBuffer = (${pt_out} *) pOut + (start >> 2);
 %endif
 
+## BN pointer shift
     int i;
     ${act_t} *k1 = pKappa + start;
     ${act_t} *lambda1 = pLambda + start;
 
+## setup the inner loop it will compute two in parallel
 %if config.kernel.out_data_t == 2:
     for(i=start; i<stop; i+=4)
 %elif config.kernel.out_data_t == 4:
@@ -152,6 +161,7 @@ void ${config.fn_name}(
     {
         int sum = 0;
         int sum2 = 0;
+## first init the accumulator with the biases
         if (pBias != NULL)
         {
           sum = *(int32_t *)(pBias + 4*i);
@@ -168,6 +178,7 @@ void ${config.fn_name}(
         }
 %endif
 
+## setup the pointers to the correct input and weight of the core
         ${pt_in} *pA = pIn;
         int8_t *pB = pWeight + (i * dim_vec_wt);
         int8_t *pB2 = pB + dim_vec_wt;
@@ -176,6 +187,7 @@ void ${config.fn_name}(
         int8_t *pB4 = pB3 + dim_vec_wt;
 %endif
 
+## START inner loop
 %if config.less_precision == 8:
         for (int j=0; j<(dim_vec >> 2); j++)
 %elif config.less_precision == 4:
@@ -184,6 +196,7 @@ void ${config.fn_name}(
         for (int j=0; j<(dim_vec >> 4); j++)
 %endif
         {
+## input precision 8
 %if config.less_precision == 8:
           vecA = *((${vt_in}*)pA);
           vecB = *((v4s*)pB);
@@ -198,6 +211,7 @@ void ${config.fn_name}(
           sum3 = ${sumdotp_fn}(vecA, vecB3, sum3);
           sum4 = ${sumdotp_fn}(vecA, vecB4, sum4);
 %endif
+## input precision 4
 %elif config.less_precision == 4:
 %if config.kernel.in_data_t == 8:
           vecA[0] = *((${vt_in}*)pA);
@@ -243,6 +257,7 @@ void ${config.fn_name}(
           sum4 = ${sumdotp_fn}(vecA[0], vecB4[0], sum4);
           sum4 = ${sumdotp_fn}(vecA[1], vecB4[1], sum4);
 %endif
+## input precision 2
 %elif config.less_precision == 2:
 %if config.kernel.in_data_t == 8:
           vecA[0] = *((${vt_in}*)pA);
@@ -356,6 +371,8 @@ void ${config.fn_name}(
           pB4+=4;
 %endif
         }
+### END inner loop
+## process the remaining inputs
 %if config.less_precision == 2:
         uint16_t col_cnt = dim_vec & 0xf;
 %elif config.less_precision == 4:
@@ -365,6 +382,7 @@ void ${config.fn_name}(
 %endif
         while (col_cnt)
         {
+## input precision 2
 %if config.less_precision == 2:
 %if config.kernel.in_data_t == 2:
           ${pt_in} inA = (${pt_in}) ${bex}((${int_t_in}) *pA, 2, 0);
@@ -493,6 +511,7 @@ void ${config.fn_name}(
           sum4 += inA3 * inB15;
           sum4 += inA4 * inB16;
 %endif
+## input precision 4
 %elif config.less_precision == 4:
 %if config.kernel.in_data_t == 4:
           ${pt_in} inA = (${pt_in}) ${bex}((${int_t_in}) *pA, 4, 0);
@@ -549,6 +568,7 @@ void ${config.fn_name}(
           sum4 += inA * inB7;
           sum4 += inA2 * inB8;
 %endif
+## input precision 8
 %elif config.less_precision == 8:
           ${pt_in} inA = *pA;
           pA++;
@@ -571,6 +591,7 @@ void ${config.fn_name}(
 %endif
           col_cnt--;
         }
+## BN + ReLU + Quant
         if (flag_batch_norm && flag_relu)
         {
 %if config.kernel.out_data_t == 8:
@@ -601,6 +622,7 @@ void ${config.fn_name}(
 %endif
         }
         else
+## only ReLU + Quant
         {
           if (flag_relu == 1)
           {
@@ -626,6 +648,7 @@ void ${config.fn_name}(
 %endif
           }
           else
+## only Quant
           {
 %if config.kernel.out_data_t == 8:
             *pOutBuffer = (${pt_out}) ${out_clip_fn}(sum >> out_shift);
@@ -650,6 +673,7 @@ void ${config.fn_name}(
           }
         }
     }
+## for 8-bit output we may need to process left-over neurons
 %if config.kernel.out_data_t == 8:
     if (lft_neurons && (stop - start) > 0)
     {

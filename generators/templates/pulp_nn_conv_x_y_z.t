@@ -20,7 +20,7 @@
 #include "pmsis.h"
 #include "pulp_nn_utils.h"
 #include "pulp_nn_kernels.h"
-
+## utility for the template
 <%
 act_prec = int(config.kernel.act_prec[0:2])
 act_t = f"int{act_prec}_t"
@@ -66,6 +66,7 @@ void ${config.fn_name}(
                         uint8_t flag_relu,
                         uint8_t flag_batch_norm)
 {
+## setup the dimension of the in/out channels
 %if config.kernel.in_data_t == 8:
   uint16_t ch_in_r = ch_in;
 %elif config.kernel.in_data_t == 4:
@@ -81,6 +82,7 @@ void ${config.fn_name}(
   uint16_t ch_out_r = ch_out >> 2;
 %endif
 
+## distribute the load on the cluster
   int core_id = pi_core_id();
   uint8_t * pIm2ColBase = pIm2ColBuffer + (2 * core_id * ch_in * dim_kernel_x * dim_kernel_y);
   int i_out_y, i_out_x, i_ker_y, i_ker_x;
@@ -92,6 +94,7 @@ void ${config.fn_name}(
   uint8_t section;
   int core_id_r;
 
+## handle remaining chunks of data
   if(extra_chunk && dim_out_x > 1)
   {
     Log2Core = log2(NUM_CORES >> 1);
@@ -120,6 +123,7 @@ void ${config.fn_name}(
   uint8_t *pIm2Col = pIm2ColBase;
   uint8_t *pOutBuffer = pOut + (start_pixel * ch_out_r * dim_out_x) + (section * ch_out_r * dim_out_x_r);
 
+## START inner loop
   for (i_out_y = start_pixel; i_out_y < stop_pixel; i_out_y++)
   {
     for(i_out_x=(section * dim_out_x_r); i_out_x<(dim_out_x_r + (section * (dim_out_x_r + flag_dim_out_x_odd))); i_out_x++)
@@ -132,10 +136,12 @@ void ${config.fn_name}(
           {
             if((i_ker_y < 0) || (i_ker_y >= dim_in_y) || (i_ker_x < 0) || (i_ker_x >= dim_in_x))
             {
+## free the memory for the im2col
               pulp_zero_mem(pIm2Col, ch_in);
             }
             else
             {
+## allocate the memory conv -> im2col 
               ${config.im2col_fn}((${pt_in}*) (pIn + ((i_ker_y * dim_in_x + i_ker_x) * ch_in_r)), pIm2Col, ch_in);
             }
             pIm2Col+=ch_in;
@@ -207,6 +213,7 @@ void ${config.fn_name}(
           }
         }
       }
+## im2Col buffer is full -> compute MatMul
       if(pIm2Col == (pIm2ColBase + ((ch_in * dim_kernel_x * dim_kernel_y) << 1)))
       {
         pOutBuffer = ${config.mat_mul_fn}(
@@ -228,11 +235,11 @@ void ${config.fn_name}(
         pIm2Col = pIm2ColBase;
       }
     }
-  //   pOut+=(extra_chunk * ((dim_out_x_r + ((1 - section) * flag_dim_out_x_odd)) * ch_out_r));
-  // }
 
+## compute remaining data chuncks
     if(pIm2Col != pIm2ColBase)
     {
+## prepare mask for bits packet-in
   %if config.kernel.out_data_t == 2:
       int8_t mask2 = 0x0c;
       int8_t n_mask2 = ~ mask2;
@@ -367,6 +374,7 @@ void ${config.fn_name}(
           col_cnt_im2col--;
   %endif
         }
+## BN + ReLU + Quant
   %if config.kernel.out_data_t == 8 or config.kernel.quantization == 'shift_clip':
         if (flag_batch_norm && flag_relu)
         {
@@ -401,6 +409,7 @@ void ${config.fn_name}(
         }
         else
         {
+## ReLU + Quant
           if(flag_relu == 1)
           {
   %if config.kernel.out_data_t == 8:
@@ -426,6 +435,7 @@ void ${config.fn_name}(
             }
   %endif
           }
+## Quant
           else
           {
   %if config.kernel.out_data_t == 8:

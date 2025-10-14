@@ -6,9 +6,9 @@ from mako.template import Template
 import torch
 
 # ISAs supported by PULP-NN-mixed kernels
-_PULPNN_ISAS = ['XpulpV2',
-                'XpulpNN',
-                'XpulpNN-mixed']
+# _PULPNN_ISAS = ['XpulpV2',
+#                 'XpulpNN',
+#                 'XpulpNN-mixed']
 
 # dataclass describing the quantization of a tensor
 @dataclass
@@ -18,13 +18,13 @@ class PNNDataFormat:
 
     @property
     def clip_hi(self):
-        if signed:
+        if self.signed:
             return 2**(self.n_bits-1) - 1
         return 2**self.n_bits - 1
 
     @property
     def clip_lo(self):
-        if signed:
+        if self.signed:
             return -(self.clip_hi+1)
         return 0
 
@@ -33,7 +33,7 @@ class PNNDataFormat:
 
 @dataclass
 class PNNVersion:
-    isa : Literal[*_PULPNN_ISAS]
+    isa : Literal['XpulpV2', 'XpulpNN', 'XpulpNN-mixed']
     act_bw : Literal[32, 64]
 
 # dataclass to describe a specific tensor's shape and data format

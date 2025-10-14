@@ -20,6 +20,7 @@
 #include "pmsis.h"
 #include "pulp_nn_utils.h"
 
+## utility method for the template
 <%
 act_prec = int(config.kernel.act_prec[0:2])
 act_t = f"int{act_prec}_t"
@@ -53,6 +54,7 @@ ${pt_out} *${config.fn_name}(
                         uint8_t flag_relu,
                         uint8_t flag_batch_norm)
 {
+## sub-byte packet-in utility
 %if config.kernel.out_data_t == 2:
   int8_t mask2 = 0x0c;
   int8_t n_mask2 = ~ mask2;
@@ -68,6 +70,7 @@ ${pt_out} *${config.fn_name}(
   int8_t n_mask = ~ mask;
   int8_t off = 0x04;
 %endif
+## tmp variable for the computation
 %if config.kernel.wt_data_t == 2:
   v4s vecA[4];
   v4s vecA2[4];
@@ -95,6 +98,7 @@ ${pt_out} *${config.fn_name}(
   ${vt_in} vecB;
   ${vt_in} vecB2;
 
+## align the length of the data to parallelization
 %if config.kernel.out_data_t == 2:
   uint16_t ch_out_r = ch_out >> 2;
 %elif config.kernel.out_data_t == 4:
@@ -113,16 +117,19 @@ ${pt_out} *${config.fn_name}(
   //uint8_t *pOut2 = pOut + ch_out_r;
   int8_t *pA = pWeight;
 
+  ## look for un-processed data
   uint16_t chan_left = ch_out & 0x3;
 
   for(int i=0; i < (ch_out >> 2); i++)
   {
+## setup the pointers
     ${pt_in} *pB =  pIn;
     ${pt_in} *pB2 = (pB + num_col_im2col);
     int8_t *pA2 = (pA + num_col_im2col_w);
     int8_t *pA3 = (pA2 + num_col_im2col_w);
     int8_t *pA4 = (pA3 + num_col_im2col_w);
 
+## computes 4 out-channels per 2 spatial position
     int sum = 0;
     int sum2 = 0;
     int sum3 = 0;
@@ -134,6 +141,7 @@ ${pt_out} *${config.fn_name}(
 
     if (pBias != NULL)
     {
+## init the accomulators with the biases
       sum = *((int*)  pBias);
       pBias+= 4;
       sum2 = *((int*)  pBias);
@@ -149,9 +157,11 @@ ${pt_out} *${config.fn_name}(
       sum8 = sum4;
     }
 
+## START inner loop
     for(int j=0; j<(num_col_im2col_w >> 2); j++)
     {
 %if config.kernel.wt_data_t == 2:
+## load the input vector
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
       vecB3 = *((${vt_in}*)(pB + 4));
@@ -164,6 +174,7 @@ ${pt_out} *${config.fn_name}(
       pB+=16;
       pB2+=16;
 
+## unpack the weight
       pA = ${config.unpack_fn}(pA,vecA);
 
       sum = ${mac_fn}(vecB, vecA[0], sum);
@@ -207,6 +218,7 @@ ${pt_out} *${config.fn_name}(
       sum8 = ${mac_fn}(vecB6, vecA4[2], sum8);
       sum4 = ${mac_fn}(vecB7, vecA4[3], sum4);
       sum8 = ${mac_fn}(vecB8, vecA4[3], sum8);
+## precision 4
 %elif config.kernel.wt_data_t == 4:
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
@@ -247,6 +259,7 @@ ${pt_out} *${config.fn_name}(
 
       sum4 = ${mac_fn}(vecB3, vecA4[1], sum4);
       sum8 = ${mac_fn}(vecB4, vecA4[1], sum8);
+## precision 2
 %else:
       vecA = *((v4s*)pA);
       vecA2 = *((v4s*)pA2);
@@ -402,7 +415,9 @@ ${pt_out} *${config.fn_name}(
       col_cnt_im2col--;
 %endif
     }
+## END inner loop
 %if config.kernel.out_data_t == 8 or config.kernel.quantization == 'shift_clip':
+## BN + ReLU + Quant
     if (flag_batch_norm && flag_relu)
     {
 %if config.kernel.out_data_t == 8:
@@ -488,6 +503,7 @@ ${pt_out} *${config.fn_name}(
     else
     {
       if (flag_relu == 1)
+## ReLU + Quant
       {
 %if config.kernel.out_data_t == 8:
         *pOut = ${config.relu_fn}(sum, out_mult, out_shift);
@@ -545,6 +561,7 @@ ${pt_out} *${config.fn_name}(
 %endif
       }
       else
+## only Quant
       {
 %if config.kernel.out_data_t == 8:
         *pOut = (uint8_t) clip8(sum >> out_shift);
@@ -681,6 +698,7 @@ ${pt_out} *${config.fn_name}(
   %if config.kernel.out_data_t == 4:
    uint16_t i = 0;
   %endif
+## compute the channel left
    while(chan_left)
   {
     ${pt_in} *pB = pIn;
