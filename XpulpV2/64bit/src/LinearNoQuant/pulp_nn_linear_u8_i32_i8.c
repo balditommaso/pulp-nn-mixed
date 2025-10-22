@@ -48,7 +48,7 @@ void pulp_nn_linear_u8_i32_i8(
     int stop_even = stop - lft_neurons;
     int i;
 
-    for(i=start; i<stop_even; i+=2)
+    for(i = start; i < stop_even; i += 2)
     {
         int sum = 0;
         int sum2 = 0;
@@ -62,30 +62,32 @@ void pulp_nn_linear_u8_i32_i8(
         int8_t *pB = pWeight + (i * dim_vec_wt);
         int8_t *pB2 = pB + dim_vec_wt;
 
-        for (int j=0; j<(dim_vec >> 2); j++)
+        for (int j = 0; j < (dim_vec >> 2); j++)
         {
-               vecA = *((v4u*)pA);
-               vecB = *((v4s*)pB);
-               vecB2 = *((v4s*)pB2);
-             sum = SumDotp4(vecA, vecB, sum);
-             sum2 = SumDotp4(vecA, vecB2, sum2);
-                  pA+=4;
-                  pB+=4;
-                  pB2+=4;
+            vecA = *((v4u*)pA);
+            vecB = *((v4s*)pB);
+            vecB2 = *((v4s*)pB2);
+            sum = SumDotp4(vecA, vecB, sum);
+            sum2 = SumDotp4(vecA, vecB2, sum2);
+            pA+=4;
+            pB+=4;
+            pB2+=4;
         }
-            uint16_t col_cnt = dim_vec & 0x3;
-            while (col_cnt)
-            {
-                  uint8_t inA = *pA;
-                  pA++;
-                  int8_t inB = *pB;
-                  pB++;
-                  int8_t inB5 = *pB2;
-                  pB2++;
-                  sum += inA * inB;
-                sum2 += inA * inB5;
-                  col_cnt--;
-            }
+
+        uint16_t col_cnt = dim_vec & 0x3;
+        while (col_cnt)
+        {
+            uint8_t inA = *pA;
+            pA++;
+            int8_t inB = *pB;
+            pB++;
+            int8_t inB5 = *pB2;
+            pB2++;
+            sum += inA * inB;
+            sum2 += inA * inB5;
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
         *pOutBuffer = sum2;
@@ -102,26 +104,29 @@ void pulp_nn_linear_u8_i32_i8(
         uint8_t *pA = pIn;
         int8_t *pB = pWeight + (i * dim_vec_wt);
 
-        for (int j=0; j<(dim_vec >> 2); j++)
+        for (int j = 0; j < (dim_vec >> 2); j++)
         {
             vecA = *((v4u*)pA);
             vecB = *((v4s*)pB);
             sum = SumDotp4(vecA, vecB, sum);
-           pA+=4;
-           pB+=4;
+            pA+=4;
+            pB+=4;
         }
-            uint16_t col_cnt = dim_vec & 0x3;
-            while (col_cnt)
-            {
-                  uint8_t inA = *pA;
-                  pA++;
-                  int8_t inB = *pB;
-                  pB++;
-                  sum += inA * inB;
-                  col_cnt--;
-            }
+        uint16_t col_cnt = dim_vec & 0x3;
+
+        while (col_cnt)
+        {
+            uint8_t inA = *pA;
+            pA++;
+            int8_t inB = *pB;
+            pB++;
+            sum += inA * inB;
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
     }
+    
     pi_cl_team_barrier(0);
 }

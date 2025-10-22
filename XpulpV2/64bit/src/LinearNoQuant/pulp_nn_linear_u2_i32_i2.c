@@ -48,7 +48,7 @@ void pulp_nn_linear_u2_i32_i2(
     int stop_even = stop - lft_neurons;
     int i;
 
-    for(i=start; i<stop_even; i+=2)
+    for(i = start; i < stop_even; i += 2)
     {
         int sum = 0;
         int sum2 = 0;
@@ -62,41 +62,42 @@ void pulp_nn_linear_u2_i32_i2(
         int8_t *pB = pWeight + (i * dim_vec_wt);
         int8_t *pB2 = pB + dim_vec_wt;
 
-        for (int j=0; j<(dim_vec >> 4); j++)
+        for (int j = 0; j < (dim_vec >> 4); j++)
         {
-                  pulp_nn_u2_to_u8(pA,vecA);
+            pulp_nn_u2_to_u8(pA,vecA);
             pulp_nn_i2_to_i8(pB,vecB);
             pulp_nn_i2_to_i8(pB2,vecB2);
-                sum = SumDotp4(vecA[0], vecB[0], sum);
-                  sum = SumDotp4(vecA[1], vecB[1], sum);
-                  sum = SumDotp4(vecA[2], vecB[2], sum);
-                  sum = SumDotp4(vecA[3], vecB[3], sum);
-                  sum2 = SumDotp4(vecA[0], vecB2[0], sum2);
-                  sum2 = SumDotp4(vecA[1], vecB2[1], sum2);
-                  sum2 = SumDotp4(vecA[2], vecB2[2], sum2);
-                  sum2 = SumDotp4(vecA[3], vecB2[3], sum2);
-                  pA+=4;
-                  pB+=4;
-                  pB2+=4;
+            sum = SumDotp4(vecA[0], vecB[0], sum);
+            sum = SumDotp4(vecA[1], vecB[1], sum);
+            sum = SumDotp4(vecA[2], vecB[2], sum);
+            sum = SumDotp4(vecA[3], vecB[3], sum);
+            sum2 = SumDotp4(vecA[0], vecB2[0], sum2);
+            sum2 = SumDotp4(vecA[1], vecB2[1], sum2);
+            sum2 = SumDotp4(vecA[2], vecB2[2], sum2);
+            sum2 = SumDotp4(vecA[3], vecB2[3], sum2);
+            pA+=4;
+            pB+=4;
+            pB2+=4;
         }
-            uint16_t col_cnt = dim_vec & 0xf;
-            while (col_cnt)
-            {
-                  uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 2, 0);
-                  uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 2, 2);
-                  uint8_t inA3 = (uint8_t) bitextu((uint32_t) *pA, 2, 4);
-                  uint8_t inA4 = (uint8_t) bitextu((uint32_t) *pA, 2, 6);
-                  pA++;
-                  int8_t inB = (int8_t) bitext((int) *pB, 2, 0);
-                  int8_t inB2 = (int8_t) bitext((int) *pB, 2, 2);
-                  int8_t inB3 = (int8_t) bitext((int) *pB, 2, 4);
-                  int8_t inB4 = (int8_t) bitext((int) *pB, 2, 6);
-                  pB++;
-                  int8_t inB5 = (int8_t) bitext((int) *pB2, 2, 0);
-                  int8_t inB6 = (int8_t) bitext((int) *pB2, 2, 2);
-                  int8_t inB7 = (int8_t) bitext((int) *pB2, 2, 4);
-                  int8_t inB8 = (int8_t) bitext((int) *pB2, 2, 6);
-                  pB2++;
+
+        uint16_t col_cnt = dim_vec & 0xf;
+        while (col_cnt)
+        {
+            uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 2, 0);
+            uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 2, 2);
+            uint8_t inA3 = (uint8_t) bitextu((uint32_t) *pA, 2, 4);
+            uint8_t inA4 = (uint8_t) bitextu((uint32_t) *pA, 2, 6);
+            pA++;
+            int8_t inB = (int8_t) bitext((int) *pB, 2, 0);
+            int8_t inB2 = (int8_t) bitext((int) *pB, 2, 2);
+            int8_t inB3 = (int8_t) bitext((int) *pB, 2, 4);
+            int8_t inB4 = (int8_t) bitext((int) *pB, 2, 6);
+            pB++;
+            int8_t inB5 = (int8_t) bitext((int) *pB2, 2, 0);
+            int8_t inB6 = (int8_t) bitext((int) *pB2, 2, 2);
+            int8_t inB7 = (int8_t) bitext((int) *pB2, 2, 4);
+            int8_t inB8 = (int8_t) bitext((int) *pB2, 2, 6);
+            pB2++;
             sum += inA * inB;
             sum += inA2 * inB2;
             sum += inA3 * inB3;
@@ -105,8 +106,9 @@ void pulp_nn_linear_u2_i32_i2(
             sum2 += inA2 * inB6;
             sum2 += inA3 * inB7;
             sum2 += inA4 * inB8;
-                  col_cnt--;
-            }
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
         *pOutBuffer = sum2;
@@ -123,38 +125,41 @@ void pulp_nn_linear_u2_i32_i2(
         uint8_t *pA = pIn;
         int8_t *pB = pWeight + (i * dim_vec_wt);
 
-        for (int j=0; j<(dim_vec >> 4); j++)
+        for (int j = 0; j < (dim_vec >> 4); j++)
         {
-              pulp_nn_u2_to_u8(pA,vecA);
+            pulp_nn_u2_to_u8(pA,vecA);
            pulp_nn_i2_to_i8(pB,vecB);
-           sum = SumDotp4(vecA[0], vecB[0], sum);
-             sum = SumDotp4(vecA[1], vecB[1], sum);
-             sum = SumDotp4(vecA[2], vecB[2], sum);
-             sum = SumDotp4(vecA[3], vecB[3], sum);
-           pA+=4;
-           pB+=4;
+            sum = SumDotp4(vecA[0], vecB[0], sum);
+            sum = SumDotp4(vecA[1], vecB[1], sum);
+            sum = SumDotp4(vecA[2], vecB[2], sum);
+            sum = SumDotp4(vecA[3], vecB[3], sum);
+            pA+=4;
+            pB+=4;
         }
-            uint16_t col_cnt = dim_vec & 0xf;
-            while (col_cnt)
-            {
-                  uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 2, 0);
-                  uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 2, 2);
-                  uint8_t inA3 = (uint8_t) bitextu((uint32_t) *pA, 2, 4);
-                  uint8_t inA4 = (uint8_t) bitextu((uint32_t) *pA, 2, 6);
-                  pA++;
-                  int8_t inB = (int8_t) bitext((int) *pB, 2, 0);
-                  int8_t inB2 = (int8_t) bitext((int) *pB, 2, 2);
-                  int8_t inB3 = (int8_t) bitext((int) *pB, 2, 4);
-                  int8_t inB4 = (int8_t) bitext((int) *pB, 2, 6);
-                  pB++;
+        uint16_t col_cnt = dim_vec & 0xf;
+
+        while (col_cnt)
+        {
+            uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 2, 0);
+            uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 2, 2);
+            uint8_t inA3 = (uint8_t) bitextu((uint32_t) *pA, 2, 4);
+            uint8_t inA4 = (uint8_t) bitextu((uint32_t) *pA, 2, 6);
+            pA++;
+            int8_t inB = (int8_t) bitext((int) *pB, 2, 0);
+            int8_t inB2 = (int8_t) bitext((int) *pB, 2, 2);
+            int8_t inB3 = (int8_t) bitext((int) *pB, 2, 4);
+            int8_t inB4 = (int8_t) bitext((int) *pB, 2, 6);
+            pB++;
             sum += inA * inB;
             sum += inA2 * inB2;
             sum += inA3 * inB3;
             sum += inA4 * inB4;
-                  col_cnt--;
-            }
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
     }
+    
     pi_cl_team_barrier(0);
 }

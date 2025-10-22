@@ -34,9 +34,12 @@ pt_in = f"{u_(config.kernel.in_signed)}int8_t"
 vt_in = f"v4{su(config.kernel.in_signed)}"
 int_t_in = f"{u_(config.kernel.in_signed)}int32_t"
 pt_out = f"{u_(config.kernel.out_signed)}int8_t"
-sumdotp_fn = f"SumDotp{s_(config.kernel.in_signed)}4"
+sumdotp_fn = f"SumDotp{s_(config.kernel.in_signed)}4("
 out_clip_fn = f"clip{s_(config.kernel.out_signed)}{config.kernel.out_data_t}"
 bex = f"bitext{u_(config.kernel.in_signed)}"
+compute_fn = sumdotp_fn
+if config.kernel.lut:
+    compute_fn = f"{config.lut_fn}(pLUT, "
 %>
 
 
@@ -45,6 +48,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+%if config.kernel.lut:
+                        int8_t *pLUT,
+%endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mult,
@@ -152,11 +158,11 @@ void ${config.fn_name}(
 
 ## setup the inner loop it will compute two in parallel
 %if config.kernel.out_data_t == 2:
-    for(i=start; i<stop; i+=4)
+    for(i = start; i < stop; i += 4)
 %elif config.kernel.out_data_t == 4:
-    for(i=start; i<stop; i+=2)
+    for(i = start; i < stop; i += 2)
 %elif config.kernel.out_data_t == 8:
-    for(i=start; i<stop_even; i+=2)
+    for(i = start; i < stop_even; i += 2)
 %endif
     {
         int sum = 0;
@@ -205,11 +211,11 @@ void ${config.fn_name}(
           vecB3 = *((v4s*)pB3);
           vecB4 = *((v4s*)pB4);
 %endif
-          sum = ${sumdotp_fn}(vecA, vecB, sum);
-          sum2 = ${sumdotp_fn}(vecA, vecB2, sum2);
+          sum = ${compute_fn}vecA, vecB, sum);
+          sum2 = ${compute_fn}vecA, vecB2, sum2);
 %if config.kernel.out_data_t == 2:
-          sum3 = ${sumdotp_fn}(vecA, vecB3, sum3);
-          sum4 = ${sumdotp_fn}(vecA, vecB4, sum4);
+          sum3 = ${compute_fn}vecA, vecB3, sum3);
+          sum4 = ${compute_fn}vecA, vecB4, sum4);
 %endif
 ## input precision 4
 %elif config.less_precision == 4:
@@ -247,15 +253,15 @@ void ${config.fn_name}(
           ${config.unpack_wt_fn}(pB4,vecB4);
 %endif
 %endif
-          sum = ${sumdotp_fn}(vecA[0], vecB[0], sum);
-          sum = ${sumdotp_fn}(vecA[1], vecB[1], sum);
-          sum2 = ${sumdotp_fn}(vecA[0], vecB2[0], sum2);
-          sum2 = ${sumdotp_fn}(vecA[1], vecB2[1], sum2);
+          sum = ${compute_fn}vecA[0], vecB[0], sum);
+          sum = ${compute_fn}vecA[1], vecB[1], sum);
+          sum2 = ${compute_fn}vecA[0], vecB2[0], sum2);
+          sum2 = ${compute_fn}vecA[1], vecB2[1], sum2);
 %if config.kernel.out_data_t == 2:
-          sum3 = ${sumdotp_fn}(vecA[0], vecB3[0], sum3);
-          sum3 = ${sumdotp_fn}(vecA[1], vecB3[1], sum3);
-          sum4 = ${sumdotp_fn}(vecA[0], vecB4[0], sum4);
-          sum4 = ${sumdotp_fn}(vecA[1], vecB4[1], sum4);
+          sum3 = ${compute_fn}vecA[0], vecB3[0], sum3);
+          sum3 = ${compute_fn}vecA[1], vecB3[1], sum3);
+          sum4 = ${compute_fn}vecA[0], vecB4[0], sum4);
+          sum4 = ${compute_fn}vecA[1], vecB4[1], sum4);
 %endif
 ## input precision 2
 %elif config.less_precision == 2:
@@ -344,23 +350,23 @@ void ${config.fn_name}(
           ${config.unpack_wt_fn}(pB4,vecB4);
 %endif
 %endif
-          sum = ${sumdotp_fn}(vecA[0], vecB[0], sum);
-          sum = ${sumdotp_fn}(vecA[1], vecB[1], sum);
-          sum = ${sumdotp_fn}(vecA[2], vecB[2], sum);
-          sum = ${sumdotp_fn}(vecA[3], vecB[3], sum);
-          sum2 = ${sumdotp_fn}(vecA[0], vecB2[0], sum2);
-          sum2 = ${sumdotp_fn}(vecA[1], vecB2[1], sum2);
-          sum2 = ${sumdotp_fn}(vecA[2], vecB2[2], sum2);
-          sum2 = ${sumdotp_fn}(vecA[3], vecB2[3], sum2);
+          sum = ${compute_fn}vecA[0], vecB[0], sum);
+          sum = ${compute_fn}vecA[1], vecB[1], sum);
+          sum = ${compute_fn}vecA[2], vecB[2], sum);
+          sum = ${compute_fn}vecA[3], vecB[3], sum);
+          sum2 = ${compute_fn}vecA[0], vecB2[0], sum2);
+          sum2 = ${compute_fn}vecA[1], vecB2[1], sum2);
+          sum2 = ${compute_fn}vecA[2], vecB2[2], sum2);
+          sum2 = ${compute_fn}vecA[3], vecB2[3], sum2);
 %if config.kernel.out_data_t == 2:
-          sum3 = ${sumdotp_fn}(vecA[0], vecB3[0], sum3);
-          sum3 = ${sumdotp_fn}(vecA[1], vecB3[1], sum3);
-          sum3 = ${sumdotp_fn}(vecA[2], vecB3[2], sum3);
-          sum3 = ${sumdotp_fn}(vecA[3], vecB3[3], sum3);
-          sum4 = ${sumdotp_fn}(vecA[0], vecB4[0], sum4);
-          sum4 = ${sumdotp_fn}(vecA[1], vecB4[1], sum4);
-          sum4 = ${sumdotp_fn}(vecA[2], vecB4[2], sum4);
-          sum4 = ${sumdotp_fn}(vecA[3], vecB4[3], sum4);
+          sum3 = ${compute_fn}vecA[0], vecB3[0], sum3);
+          sum3 = ${compute_fn}vecA[1], vecB3[1], sum3);
+          sum3 = ${compute_fn}vecA[2], vecB3[2], sum3);
+          sum3 = ${compute_fn}vecA[3], vecB3[3], sum3);
+          sum4 = ${compute_fn}vecA[0], vecB4[0], sum4);
+          sum4 = ${compute_fn}vecA[1], vecB4[1], sum4);
+          sum4 = ${compute_fn}vecA[2], vecB4[2], sum4);
+          sum4 = ${compute_fn}vecA[3], vecB4[3], sum4);
 %endif
 %endif
           pA+=4;
@@ -697,7 +703,7 @@ void ${config.fn_name}(
 %if config.less_precision == 8:
             vecA = *((${vt_in}*)pA);
             vecB = *((v4s*)pB);
-            sum = ${sumdotp_fn}(vecA, vecB, sum);
+            sum = ${compute_fn}vecA, vecB, sum);
 %elif config.less_precision == 4:
 %if config.kernel.in_data_t == 8:
             vecA[0] = *((${vt_in}*)pA);
@@ -713,8 +719,8 @@ void ${config.fn_name}(
 %else:
             ${config.unpack_wt_fn}(pB,vecB);
 %endif
-            sum = ${sumdotp_fn}(vecA[0], vecB[0], sum);
-            sum = ${sumdotp_fn}(vecA[1], vecB[1], sum);
+            sum = ${compute_fn}vecA[0], vecB[0], sum);
+            sum = ${compute_fn}vecA[1], vecB[1], sum);
 %elif config.less_precision == 2:
 %if config.kernel.in_data_t == 8:
             vecA[0] = *((${vt_in}*)pA);
@@ -745,10 +751,10 @@ void ${config.fn_name}(
 %elif config.kernel.wt_data_t == 2:
             ${config.unpack_wt_fn}(pB,vecB);
 %endif
-            sum = ${sumdotp_fn}(vecA[0], vecB[0], sum);
-            sum = ${sumdotp_fn}(vecA[1], vecB[1], sum);
-            sum = ${sumdotp_fn}(vecA[2], vecB[2], sum);
-            sum = ${sumdotp_fn}(vecA[3], vecB[3], sum);
+            sum = ${compute_fn}vecA[0], vecB[0], sum);
+            sum = ${compute_fn}vecA[1], vecB[1], sum);
+            sum = ${compute_fn}vecA[2], vecB[2], sum);
+            sum = ${compute_fn}vecA[3], vecB[3], sum);
 %endif
 %endif
             pA+=4;

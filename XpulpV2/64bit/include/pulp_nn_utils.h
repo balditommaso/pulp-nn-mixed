@@ -565,7 +565,7 @@ static uint8_t *__attribute__((always_inline)) pulp_nn_u4_to_u8(uint8_t *pSrc, u
   return pSrc;
 }
 
-static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, int8_t * pDst)
+static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8(int8_t *pSrc, int8_t *pDst)
 {
   v4s Src = *((v4s*) pSrc);
   int8_t bext1, bext2, bext3, bext4;
@@ -602,7 +602,7 @@ static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, i
   return pSrc;
 }
 
-static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t * pSrc, uint8_t * pDst)
+static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t *pSrc, uint8_t *pDst)
 {
   v4u Src = *((v4u*) pSrc);
   uint8_t bext1, bext2, bext3, bext4;
@@ -769,11 +769,284 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
   }
 }
 
+
+
+static void __attribute__((noinline)) pulp_nn_look_up_u2_i32_i2(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i2_i32_i2(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X + (1 << (2-1));
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u2_i32_i4(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i2_i32_i4(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X + (1 << (2-1));
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u2_i32_i8(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i2_i32_i8(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X + (1 << (2-1));
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u4_i32_i2(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i4_i32_i2(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X + (1 << (4-1));
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u4_i32_i4(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i4_i32_i4(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X + (1 << (4-1));
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u4_i32_i8(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i4_i32_i8(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X + (1 << (4-1));
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u8_i32_i2(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i8_i32_i2(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (2-1));
+  int in_idx = (int)X + (1 << (8-1));
+
+  int lut_idx = in_idx * (1 << 2) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u8_i32_i4(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i8_i32_i4(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (4-1));
+  int in_idx = (int)X + (1 << (8-1));
+
+  int lut_idx = in_idx * (1 << 4) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_u8_i32_i8(uint8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X;
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+
+  *sum += prod;
+}
+
+static void __attribute__((noinline)) pulp_nn_look_up_i8_i32_i8(int8_t X, int8_t W, uint8_t *pLUT, int *sum)
+{
+  // early return for zeros
+  if (X == 0 || W == 0)
+    return 0;
+  int w_idx  = (int)W + (1 << (8-1));
+  int in_idx = (int)X + (1 << (8-1));
+
+  int lut_idx = in_idx * (1 << 8) + w_idx;
+  int prod = (int32_t*)pLUT + lut_idx;
+  if ((X < 0) ^ (W < 0))
+      prod = -prod;
+
+  *sum += prod;
+}
+
+
 static void __attribute__((noinline)) pulp_nn_im2col_u2_to_u8(uint8_t * pInput, uint8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
@@ -797,7 +1070,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i2_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
@@ -821,7 +1094,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u4_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
@@ -841,7 +1114,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i4_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
@@ -861,7 +1134,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u8_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -879,7 +1152,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i8_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -898,7 +1171,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u2(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -917,7 +1190,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i2(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -936,7 +1209,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u4(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u4(pInput, pOutput);
     MemoryFence();
@@ -957,7 +1230,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i4(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i4(pInput, pOutput);
     MemoryFence();
@@ -978,7 +1251,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1003,7 +1276,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1028,7 +1301,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u4_to_u4(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -1047,7 +1320,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i4_to_i4(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -1066,7 +1339,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u4_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1087,7 +1360,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i4_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1108,7 +1381,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u8_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -1127,7 +1400,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i8_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -1672,10 +1945,10 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u4(
     uint8_t inB0 = (uint8_t) bitextu((unsigned int) *pCom, 4, 0);
     uint8_t inB1 = (uint8_t) bitextu((unsigned int) *pCom, 4, 4);
 
-    if(inA0<inB0)
+    if(inA0 < inB0)
       inA0=inB0;
 
-    if(inA1<inB1)
+    if(inA1 < inB1)
       inA1=inB1;
 
     *((uint8_t*)pIn) = bitins(inA0, n_mask, inA1, mask, off);
@@ -1751,7 +2024,7 @@ static void __attribute__((noinline)) xpulp_nn_avg_and_replace_u4(uint8_t * base
 
   int left = length & 0x3;
 
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 4, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 4, 4);
@@ -1799,7 +2072,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 2, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 2, 2);
@@ -1853,7 +2126,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_i2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     int8_t inA0 = (int8_t) bitext((int) *pIn, 2, 0);
     int8_t inA1 = (int8_t) bitext((int) *pIn, 2, 2);

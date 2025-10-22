@@ -12340,7 +12340,23 @@ void pulp_nn_linear_u8_i32_i8(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u8_i32_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i8_i32_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i8_i32_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12356,7 +12372,23 @@ void pulp_nn_linear_u8_i32_i4(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u8_i32_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i8_i32_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i8_i32_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12372,7 +12404,23 @@ void pulp_nn_linear_u8_i32_i2(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u8_i32_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i8_i32_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i8_i32_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12388,7 +12436,23 @@ void pulp_nn_linear_u4_i32_i8(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u4_i32_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i4_i32_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i4_i32_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12404,7 +12468,23 @@ void pulp_nn_linear_u4_i32_i4(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u4_i32_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i4_i32_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i4_i32_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12420,7 +12500,23 @@ void pulp_nn_linear_u4_i32_i2(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u4_i32_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i4_i32_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i4_i32_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12436,7 +12532,23 @@ void pulp_nn_linear_u2_i32_i8(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u2_i32_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i2_i32_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i2_i32_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12452,7 +12564,23 @@ void pulp_nn_linear_u2_i32_i4(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u2_i32_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i2_i32_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_i2_i32_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         int8_t *pOut,
@@ -12468,6 +12596,14 @@ void pulp_nn_linear_u2_i32_i2(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_u2_i32_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
 void pulp_nn_linear_i2_i32_i2(
                         int8_t *pIn,
                         int8_t *pBias,
@@ -12476,10 +12612,46 @@ void pulp_nn_linear_i2_i32_i2(
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 
+void pulp_nn_linear_lut_i2_i32_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
+                        int8_t *pWeight,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons);
+
+void pulp_nn_linear_lut_u8_u8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u8_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12504,10 +12676,38 @@ void pulp_nn_linear_u8_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u8_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12532,10 +12732,38 @@ void pulp_nn_linear_i8_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u8_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12560,10 +12788,38 @@ void pulp_nn_linear_u8_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u8_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12588,10 +12844,38 @@ void pulp_nn_linear_i8_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u8_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12616,10 +12900,38 @@ void pulp_nn_linear_u8_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u8_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12644,10 +12956,38 @@ void pulp_nn_linear_i8_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u4_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12672,10 +13012,38 @@ void pulp_nn_linear_u8_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u4_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12700,10 +13068,38 @@ void pulp_nn_linear_i8_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u4_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12728,10 +13124,38 @@ void pulp_nn_linear_u8_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u4_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12756,10 +13180,38 @@ void pulp_nn_linear_i8_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u4_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12784,10 +13236,38 @@ void pulp_nn_linear_u8_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u4_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12812,10 +13292,38 @@ void pulp_nn_linear_i8_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u2_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12840,10 +13348,38 @@ void pulp_nn_linear_u8_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u2_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12868,10 +13404,38 @@ void pulp_nn_linear_i8_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u2_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12896,10 +13460,38 @@ void pulp_nn_linear_u8_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u2_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12924,10 +13516,38 @@ void pulp_nn_linear_i8_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u8_u2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u8_u2_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u8_i2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12952,10 +13572,38 @@ void pulp_nn_linear_u8_i2_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i8_u2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i8_u2_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i8_i2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -12980,10 +13628,38 @@ void pulp_nn_linear_i8_i2_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u8_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13008,10 +13684,38 @@ void pulp_nn_linear_u4_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u8_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13036,10 +13740,38 @@ void pulp_nn_linear_i4_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u8_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13064,10 +13796,38 @@ void pulp_nn_linear_u4_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u8_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13092,10 +13852,38 @@ void pulp_nn_linear_i4_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u8_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13120,10 +13908,38 @@ void pulp_nn_linear_u4_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u8_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13148,10 +13964,38 @@ void pulp_nn_linear_i4_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u4_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13176,10 +14020,38 @@ void pulp_nn_linear_u4_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u4_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13204,10 +14076,38 @@ void pulp_nn_linear_i4_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u4_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13232,10 +14132,38 @@ void pulp_nn_linear_u4_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u4_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13260,10 +14188,38 @@ void pulp_nn_linear_i4_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u4_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13288,10 +14244,38 @@ void pulp_nn_linear_u4_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u4_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13316,10 +14300,38 @@ void pulp_nn_linear_i4_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u2_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13344,10 +14356,38 @@ void pulp_nn_linear_u4_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u2_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13372,10 +14412,38 @@ void pulp_nn_linear_i4_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u2_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13400,10 +14468,38 @@ void pulp_nn_linear_u4_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u2_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13428,10 +14524,38 @@ void pulp_nn_linear_i4_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u4_u2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u4_u2_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u4_i2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13456,10 +14580,38 @@ void pulp_nn_linear_u4_i2_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i4_u2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i4_u2_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i4_i2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13484,10 +14636,38 @@ void pulp_nn_linear_i4_i2_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u8_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i8_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13512,10 +14692,38 @@ void pulp_nn_linear_u2_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u8_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i8_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13540,10 +14748,38 @@ void pulp_nn_linear_i2_i8_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u8_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i8_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13568,10 +14804,38 @@ void pulp_nn_linear_u2_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u8_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i8_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13596,10 +14860,38 @@ void pulp_nn_linear_i2_i8_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u8_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i8_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13624,10 +14916,38 @@ void pulp_nn_linear_u2_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u8_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i8_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13652,10 +14972,38 @@ void pulp_nn_linear_i2_i8_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u4_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i4_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13680,10 +15028,38 @@ void pulp_nn_linear_u2_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u4_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i4_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13708,10 +15084,38 @@ void pulp_nn_linear_i2_i4_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u4_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i4_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13736,10 +15140,38 @@ void pulp_nn_linear_u2_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u4_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i4_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13764,10 +15196,38 @@ void pulp_nn_linear_i2_i4_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u4_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i4_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13792,10 +15252,38 @@ void pulp_nn_linear_u2_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u4_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i4_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13820,10 +15308,38 @@ void pulp_nn_linear_i2_i4_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u2_i8(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i2_i8(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13848,10 +15364,38 @@ void pulp_nn_linear_u2_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u2_i8(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i2_i8(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13876,10 +15420,38 @@ void pulp_nn_linear_i2_i2_i8(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u2_i4(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i2_i4(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13904,10 +15476,38 @@ void pulp_nn_linear_u2_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u2_i4(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i2_i4(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13932,10 +15532,38 @@ void pulp_nn_linear_i2_i2_i4(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_u2_u2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_u2_u2_i2(
                         uint8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_u2_i2_i2(
+                        uint8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,
@@ -13960,10 +15588,38 @@ void pulp_nn_linear_u2_i2_i2(
                         uint8_t flag_relu,
                         uint8_t flag_batchnorm);
 
+void pulp_nn_linear_lut_i2_u2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
 void pulp_nn_linear_i2_u2_i2(
                         int8_t *pIn,
                         int8_t *pBias,
                         uint8_t *pOut,
+                        int8_t *pWeight,
+                        int64_t *pKappa,
+                        int64_t *pLambda,
+                        uint16_t out_mul,
+                        uint16_t out_shift,
+                        uint16_t dim_vec,
+                        uint16_t num_o_neurons,
+                        uint8_t flag_relu,
+                        uint8_t flag_batchnorm);
+
+void pulp_nn_linear_lut_i2_i2_i2(
+                        int8_t *pIn,
+                        int8_t *pBias,
+                        int8_t *pOut,
                         int8_t *pWeight,
                         int64_t *pKappa,
                         int64_t *pLambda,

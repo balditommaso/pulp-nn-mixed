@@ -22,7 +22,6 @@
 #include "pulp_nn_kernels.h"
 
 
-
 void pulp_nn_conv_i4_u2_i8(
                         int8_t *pIn,
                         int8_t *pIm2ColBuffer,
@@ -200,8 +199,6 @@ void pulp_nn_conv_i4_u2_i8(
         pIm2Col = pIm2ColBase;
       }
     }
-  //   pOut+=(extra_chunk * ((dim_out_x_r + ((1 - section) * flag_dim_out_x_odd)) * ch_out_r));
-  // }
 
     if(pIm2Col != pIm2ColBase)
     {
