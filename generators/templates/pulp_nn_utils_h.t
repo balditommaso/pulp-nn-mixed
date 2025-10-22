@@ -632,7 +632,7 @@ in_prefix = "i" if signed else "u"
 in_t = f"{in_prefix}{in_prec}"
 pt_in = f"{'u' if not signed else ''}int8_t"
 %>
-static void __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(${pt_in} X, int8_t W, uint8_t *pLUT, int *sum)
+static void __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(uint8_t *pLUT, ${pt_in} X, int8_t W, int *sum)
 {
   // early return for zeros
   if (X == 0 || W == 0)
