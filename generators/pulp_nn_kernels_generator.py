@@ -262,6 +262,7 @@ def main():
                                     comp=lin_nq, 
                                     api=pulp_nn_init.PULPNNAPI
                                 )
+                                pass
 
             for i in pulp_nn_init.PULPNNDataPrecisions:
                 for j in pulp_nn_init.PULPNNDataPrecisions:

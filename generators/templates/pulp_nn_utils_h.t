@@ -30,10 +30,14 @@ else:
 #ifndef __PULPNN_UTILS__
 #define __PULPNN_UTILS__
 
+#include <stdio.h>
 #include "pmsis.h"
 #ifdef GAP_SDK
 #include "pulp.h"
 #endif
+
+#define DEBUG_PRINTF(...) if (pi_core_id() == 0) printf(__VA_ARGS__);
+
 
 #define bitext(x,size,off)                                      __builtin_pulp_bextract(x,size,off)
 #define bitextu(x,size,off)                                     __builtin_pulp_bextractu(x,size,off)
@@ -630,28 +634,53 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
 <%
 in_prefix = "i" if signed else "u"
 in_t = f"{in_prefix}{in_prec}"
-pt_in = f"{'u' if not signed else ''}int8_t"
+vt_in = f"v4{'u' if not signed else 's'}"
 %>
-static void __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(${pt_in} X, int8_t W, uint8_t *pLUT, int *sum)
+static int __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
 {
-  // early return for zeros
-  if (X == 0 || W == 0)
-    return 0;
-  int w_idx  = (int)W + (1 << (${w_prec}-1));
+  const int32_t *ptr_lut = pLUT; 
+  
+% if w_prec < 8:
+  // unpack the weight 
+  W_vec = pulp_nn_i${w_prec}_to_i8_r((int8_t *)&W_vec);
+% endif
+% if in_prec < 8:
+  // unpack the input
+  X_vec = pulp_nn_${in_t}_to_${in_prefix}8_r((${'u' if signed else ''}int8_t *)&X_vec);
+% endif
+
+  const int in_bits = ${in_prec};
+  const int w_bits = ${w_prec};
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
 % if signed:
-  int in_idx = (int)X + (1 << (${in_prec}-1));
+  const int in_bias = 1 << (in_bits - 1);
+% endif
+
+  for (int i = 0; i < 4; i++) 
+  {
+    ${'u' if signed else ''}int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+% if signed:
+    unsigned in_idx = (unsigned)(X + in_bias);
 % else:
-  int in_idx = (int)X;
+    unsigned in_idx = (unsigned)X;
 % endif
+    int w_idx = (unsigned)(W + w_bias);
 
-  int lut_idx = in_idx * (1 << ${w_prec}) + w_idx;
-  int prod = (int32_t*)pLUT + lut_idx;
-% if signed:
-  if ((X < 0) ^ (W < 0))
-      prod = -prod;
-% endif
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
 
-  *sum += prod;
+    sum += prod;
+  }
+
+  return sum;
 }
 % endfor
 % endfor
