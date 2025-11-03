@@ -288,7 +288,7 @@ void __attribute__((noinline)) xpulp_nn_mix_conv_u8_u2_i2(
         if (flag_batch_norm && flag_relu)
         {
           uint8_t i_o = i & 0x03;
-          out[i_o] = pulp_nn_bn_quant_u2(sum, *k1, *lambda1, out_shift);
+          out[i_o] = pulp_nn_bn_quant_i2(sum, *k1, *lambda1, out_shift);
           k1++;
           lambda1++;
           if(i_o == 0x03)
@@ -304,7 +304,7 @@ void __attribute__((noinline)) xpulp_nn_mix_conv_u8_u2_i2(
           if(flag_relu == 1)
           {
             uint8_t i_o = i & 0x03;
-            out[i_o] = pulp_nn_quant_u2(sum, out_mult, out_shift);
+            out[i_o] = pulp_nn_quant_i2(sum, out_mult, out_shift);
             if(i_o == 0x03)
             {
               out[0] = bitins(out[0], n_mask2, out[1], mask2, off2);
