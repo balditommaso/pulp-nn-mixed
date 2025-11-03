@@ -30,10 +30,14 @@ else:
 #ifndef __PULPNN_UTILS__
 #define __PULPNN_UTILS__
 
+#include <stdio.h>
 #include "pmsis.h"
 #ifdef GAP_SDK
 #include "pulp.h"
 #endif
+
+#define DEBUG_PRINTF(...) if (pi_core_id() == 1) printf(__VA_ARGS__);
+
 
 #define bitext(x,size,off)                                      __builtin_pulp_bextract(x,size,off)
 #define bitextu(x,size,off)                                     __builtin_pulp_bextractu(x,size,off)
@@ -420,7 +424,7 @@ static uint8_t *__attribute__((always_inline)) pulp_nn_u4_to_u8(uint8_t *pSrc, u
   return pSrc;
 }
 
-static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, int8_t * pDst)
+static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8(int8_t *pSrc, int8_t *pDst)
 {
   v4s Src = *((v4s*) pSrc);
   int8_t bext1, bext2, bext3, bext4;
@@ -457,7 +461,7 @@ static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, i
   return pSrc;
 }
 
-static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t * pSrc, uint8_t * pDst)
+static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t *pSrc, uint8_t *pDst)
 {
   v4u Src = *((v4u*) pSrc);
   uint8_t bext1, bext2, bext3, bext4;
@@ -624,6 +628,55 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
   }
 }
 
+
+% for in_prec, w_prec in product([2, 4, 8], [2, 4, 8]):
+% for signed in [False, True]:
+<%
+in_prefix = "i" if signed else "u"
+in_t = f"{in_prefix}{in_prec}"
+vt_in = f"v4{'u' if not signed else 's'}"
+%>
+static int __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = ${in_prec};
+  const int w_bits = ${w_prec};
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+% if signed:
+  const int in_bias = 1 << (in_bits - 1);
+% endif
+
+  for (int i = 0; i < 4; i++) 
+  {
+    ${'u' if signed else ''}int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+% if signed:
+    unsigned in_idx = (unsigned)(X + in_bias);
+% else:
+    unsigned in_idx = (unsigned)X;
+% endif
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+% endfor
+% endfor
+
+
 % for in_prec in [2,4,8]:
 % for signed in [False, True]:
 <%
@@ -641,7 +694,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_${src_t}_to_${dst_t}(${pt} 
 {
   unsigned int blkCnt = blockSize >> ${log_in_els_per_word}u;
   int lfover = blockSize & ${f"0x{in_els_per_word-1:02x}"};
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
   % if in_prec == 8:
     *((${vt}*)pOutput) = *((${vt}*)pInput);
@@ -693,7 +746,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_${src_t}_to_${dst_t}(${pt}
 {
   unsigned int blkCnt = blockSize >> ${log_in_els_per_word}u;
   int lfover = blockSize & ${f"0x{in_els_per_word-1:02x}"};
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
   % if in_prec == out_prec:
     *((${vt}*)pOutput) = *((${vt}*)pInput);
@@ -1265,10 +1318,10 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u4(
     uint8_t inB0 = (uint8_t) bitextu((unsigned int) *pCom, 4, 0);
     uint8_t inB1 = (uint8_t) bitextu((unsigned int) *pCom, 4, 4);
 
-    if(inA0<inB0)
+    if(inA0 < inB0)
       inA0=inB0;
 
-    if(inA1<inB1)
+    if(inA1 < inB1)
       inA1=inB1;
 
     *((uint8_t*)pIn) = bitins(inA0, n_mask, inA1, mask, off);
@@ -1344,7 +1397,7 @@ static void __attribute__((noinline)) xpulp_nn_avg_and_replace_u4(uint8_t * base
 
   int left = length & 0x3;
 
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 4, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 4, 4);
@@ -1392,7 +1445,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 2, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 2, 2);
@@ -1446,7 +1499,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_i2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     int8_t inA0 = (int8_t) bitext((int) *pIn, 2, 0);
     int8_t inA1 = (int8_t) bitext((int) *pIn, 2, 2);
