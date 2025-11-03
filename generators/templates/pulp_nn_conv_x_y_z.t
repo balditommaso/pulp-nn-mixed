@@ -35,8 +35,11 @@ def s_(sgn):
 pt_in = f"{u_(config.kernel.in_signed)}int8_t"
 vt_in = f"v4{su(config.kernel.in_signed)}"
 pt_out = f"{u_(config.kernel.out_signed)}int8_t"
-mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4"
+mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4("
 out_clip_fn = f"clip{s_(config.kernel.out_signed)}{config.kernel.out_data_t}"
+compute_fn = mac_fn
+if config.kernel.lut:
+  compute_fn = f"{config.lut_fn}(pLUT, "
 %>
 
 void ${config.fn_name}(
@@ -45,6 +48,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+%if config.kernel.lut:
+                        int8_t *pLUT,
+%endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mult,
@@ -222,6 +228,9 @@ void ${config.fn_name}(
           pOutBuffer,
           pOutBuffer + ch_out_r,
           pWeight,
+% if config.kernel.lut:
+          pLUT,
+% endif
           pKappa,
           pLambda,
           out_mult,
@@ -288,25 +297,25 @@ void ${config.fn_name}(
 
           pA = ${config.unpack_fn}(pA,inA);
 
-          sum = ${mac_fn}(inB, inA[0], sum);
+          sum = ${compute_fn}inB, inA[0], sum);
 
           inB = *((${vt_in}*) pB);
 
           pB+=4;
 
-          sum = ${mac_fn}(inB, inA[1], sum);
+          sum = ${compute_fn}inB, inA[1], sum);
 
           inB = *((${vt_in}*) pB);
 
           pB+=4;
 
-          sum = ${mac_fn}(inB, inA[2], sum);
+          sum = ${compute_fn}inB, inA[2], sum);
 
           inB = *((${vt_in}*) pB);
 
           pB+=4;
 
-          sum = ${mac_fn}(inB, inA[3], sum);
+          sum = ${compute_fn}inB, inA[3], sum);
   %elif config.kernel.wt_data_t == 4:
           inB = *((${vt_in}*) pB);
 
@@ -314,18 +323,18 @@ void ${config.fn_name}(
 
           pA = ${config.unpack_fn}(pA,inA);
 
-          sum = ${mac_fn}(inB, inA[0], sum);
+          sum = ${compute_fn}inB, inA[0], sum);
 
           inB = *((${vt_in}*) pB);
 
-          sum = ${mac_fn}(inB, inA[1], sum);
+          sum = ${compute_fn}inB, inA[1], sum);
 
           pB+=4;
   %else:
           v4s inA = *((v4s*) pA);
           ${vt_in} inB = *((${vt_in}*) pB);
 
-          sum = ${mac_fn}(inB, inA, sum);
+          sum = ${compute_fn}inB, inA, sum);
           pA+=4;
           pB+=4;
   %endif

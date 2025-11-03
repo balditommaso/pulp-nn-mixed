@@ -35,8 +35,11 @@ def s_(sgn):
 pt_in = f"{u_(config.kernel.in_signed)}int8_t"
 vt_in = f"v4{su(config.kernel.in_signed)}"
 pt_out = f"{u_(config.kernel.out_signed)}int8_t"
-mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4"
+mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4("
 out_clip_fn = f"clip{s_(config.kernel.out_signed)}{config.kernel.out_data_t}"
+compute_fn = mac_fn
+if config.kernel.lut:
+  compute_fn = f"{config.lut_fn}(pLUT, "
 %>
 
 ${pt_out} *${config.fn_name}(
@@ -45,6 +48,9 @@ ${pt_out} *${config.fn_name}(
                         ${pt_out} *pOut,
                         ${pt_out} *pOut2,
                         int8_t *pWeight,
+%if config.kernel.lut:
+                        int8_t *pLUT,
+%endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mult,
@@ -177,47 +183,47 @@ ${pt_out} *${config.fn_name}(
 ## unpack the weight
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum5 = ${mac_fn}(vecB2, vecA[0], sum5);
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum5 = ${mac_fn}(vecB4, vecA[1], sum5);
-      sum = ${mac_fn}(vecB5, vecA[2], sum);
-      sum5 = ${mac_fn}(vecB6, vecA[2], sum5);
-      sum = ${mac_fn}(vecB7, vecA[3], sum);
-      sum5 = ${mac_fn}(vecB8, vecA[3], sum5);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum5 = ${compute_fn}vecB2, vecA[0], sum5);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum5 = ${compute_fn}vecB4, vecA[1], sum5);
+      sum = ${compute_fn}vecB5, vecA[2], sum);
+      sum5 = ${compute_fn}vecB6, vecA[2], sum5);
+      sum = ${compute_fn}vecB7, vecA[3], sum);
+      sum5 = ${compute_fn}vecB8, vecA[3], sum5);
 
       pA2 = ${config.unpack_fn}(pA2,vecA2);
 
-      sum2 = ${mac_fn}(vecB, vecA2[0], sum2);
-      sum6 = ${mac_fn}(vecB2, vecA2[0], sum6);
-      sum2 = ${mac_fn}(vecB3, vecA2[1], sum2);
-      sum6 = ${mac_fn}(vecB4, vecA2[1], sum6);
-      sum2 = ${mac_fn}(vecB5, vecA2[2], sum2);
-      sum6 = ${mac_fn}(vecB6, vecA2[2], sum6);
-      sum2 = ${mac_fn}(vecB7, vecA2[3], sum2);
-      sum6 = ${mac_fn}(vecB8, vecA2[3], sum6);
+      sum2 = ${compute_fn}vecB, vecA2[0], sum2);
+      sum6 = ${compute_fn}vecB2, vecA2[0], sum6);
+      sum2 = ${compute_fn}vecB3, vecA2[1], sum2);
+      sum6 = ${compute_fn}vecB4, vecA2[1], sum6);
+      sum2 = ${compute_fn}vecB5, vecA2[2], sum2);
+      sum6 = ${compute_fn}vecB6, vecA2[2], sum6);
+      sum2 = ${compute_fn}vecB7, vecA2[3], sum2);
+      sum6 = ${compute_fn}vecB8, vecA2[3], sum6);
 
       pA3 = ${config.unpack_fn}(pA3,vecA3);
 
-      sum3 = ${mac_fn}(vecB, vecA3[0], sum3);
-      sum7 = ${mac_fn}(vecB2, vecA3[0], sum7);
-      sum3 = ${mac_fn}(vecB3, vecA3[1], sum3);
-      sum7 = ${mac_fn}(vecB4, vecA3[1], sum7);
-      sum3 = ${mac_fn}(vecB5, vecA3[2], sum3);
-      sum7 = ${mac_fn}(vecB6, vecA3[2], sum7);
-      sum3 = ${mac_fn}(vecB7, vecA3[3], sum3);
-      sum7 = ${mac_fn}(vecB8, vecA3[3], sum7);
+      sum3 = ${compute_fn}vecB, vecA3[0], sum3);
+      sum7 = ${compute_fn}vecB2, vecA3[0], sum7);
+      sum3 = ${compute_fn}vecB3, vecA3[1], sum3);
+      sum7 = ${compute_fn}vecB4, vecA3[1], sum7);
+      sum3 = ${compute_fn}vecB5, vecA3[2], sum3);
+      sum7 = ${compute_fn}vecB6, vecA3[2], sum7);
+      sum3 = ${compute_fn}vecB7, vecA3[3], sum3);
+      sum7 = ${compute_fn}vecB8, vecA3[3], sum7);
 
       pA4 = ${config.unpack_fn}(pA4,vecA4);
 
-      sum4 = ${mac_fn}(vecB, vecA4[0], sum4);
-      sum8 = ${mac_fn}(vecB2, vecA4[0], sum8);
-      sum4 = ${mac_fn}(vecB3, vecA4[1], sum4);
-      sum8 = ${mac_fn}(vecB4, vecA4[1], sum8);
-      sum4 = ${mac_fn}(vecB5, vecA4[2], sum4);
-      sum8 = ${mac_fn}(vecB6, vecA4[2], sum8);
-      sum4 = ${mac_fn}(vecB7, vecA4[3], sum4);
-      sum8 = ${mac_fn}(vecB8, vecA4[3], sum8);
+      sum4 = ${compute_fn}vecB, vecA4[0], sum4);
+      sum8 = ${compute_fn}vecB2, vecA4[0], sum8);
+      sum4 = ${compute_fn}vecB3, vecA4[1], sum4);
+      sum8 = ${compute_fn}vecB4, vecA4[1], sum8);
+      sum4 = ${compute_fn}vecB5, vecA4[2], sum4);
+      sum8 = ${compute_fn}vecB6, vecA4[2], sum8);
+      sum4 = ${compute_fn}vecB7, vecA4[3], sum4);
+      sum8 = ${compute_fn}vecB8, vecA4[3], sum8);
 ## precision 4
 %elif config.kernel.wt_data_t == 4:
       vecB = *((${vt_in}*)pB);
@@ -230,35 +236,35 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum5 = ${mac_fn}(vecB2, vecA[0], sum5);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum5 = ${compute_fn}vecB2, vecA[0], sum5);
 
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum5 = ${mac_fn}(vecB4, vecA[1], sum5);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum5 = ${compute_fn}vecB4, vecA[1], sum5);
 
       pA2 = ${config.unpack_fn}(pA2,vecA2);
 
-      sum2 = ${mac_fn}(vecB, vecA2[0], sum2);
-      sum6 = ${mac_fn}(vecB2, vecA2[0], sum6);
+      sum2 = ${compute_fn}vecB, vecA2[0], sum2);
+      sum6 = ${compute_fn}vecB2, vecA2[0], sum6);
 
-      sum2 = ${mac_fn}(vecB3, vecA2[1], sum2);
-      sum6 = ${mac_fn}(vecB4, vecA2[1], sum6);
+      sum2 = ${compute_fn}vecB3, vecA2[1], sum2);
+      sum6 = ${compute_fn}vecB4, vecA2[1], sum6);
 
       pA3 = ${config.unpack_fn}(pA3,vecA3);
 
-      sum3 = ${mac_fn}(vecB, vecA3[0], sum3);
-      sum7 = ${mac_fn}(vecB2, vecA3[0], sum7);
+      sum3 = ${compute_fn}vecB, vecA3[0], sum3);
+      sum7 = ${compute_fn}vecB2, vecA3[0], sum7);
 
-      sum3 = ${mac_fn}(vecB3, vecA3[1], sum3);
-      sum7 = ${mac_fn}(vecB4, vecA3[1], sum7);
+      sum3 = ${compute_fn}vecB3, vecA3[1], sum3);
+      sum7 = ${compute_fn}vecB4, vecA3[1], sum7);
 
       pA4 = ${config.unpack_fn}(pA4,vecA4);
 
-      sum4 = ${mac_fn}(vecB, vecA4[0], sum4);
-      sum8 = ${mac_fn}(vecB2, vecA4[0], sum8);
+      sum4 = ${compute_fn}vecB, vecA4[0], sum4);
+      sum8 = ${compute_fn}vecB2, vecA4[0], sum8);
 
-      sum4 = ${mac_fn}(vecB3, vecA4[1], sum4);
-      sum8 = ${mac_fn}(vecB4, vecA4[1], sum8);
+      sum4 = ${compute_fn}vecB3, vecA4[1], sum4);
+      sum8 = ${compute_fn}vecB4, vecA4[1], sum8);
 ## precision 2
 %else:
       vecA = *((v4s*)pA);
@@ -269,15 +275,15 @@ ${pt_out} *${config.fn_name}(
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
 
-      sum = ${mac_fn}(vecB, vecA, sum );
-      sum2 = ${mac_fn}(vecB, vecA2, sum2);
-      sum3 = ${mac_fn}(vecB, vecA3, sum3);
-      sum4 = ${mac_fn}(vecB, vecA4, sum4);
+      sum = ${compute_fn}vecB, vecA, sum );
+      sum2 = ${compute_fn}vecB, vecA2, sum2);
+      sum3 = ${compute_fn}vecB, vecA3, sum3);
+      sum4 = ${compute_fn}vecB, vecA4, sum4);
 
-      sum5 = ${mac_fn}(vecB2, vecA, sum5);
-      sum6 = ${mac_fn}(vecB2, vecA2, sum6);
-      sum7 = ${mac_fn}(vecB2, vecA3, sum7);
-      sum8 = ${mac_fn}(vecB2, vecA4, sum8);
+      sum5 = ${compute_fn}vecB2, vecA, sum5);
+      sum6 = ${compute_fn}vecB2, vecA2, sum6);
+      sum7 = ${compute_fn}vecB2, vecA3, sum7);
+      sum8 = ${compute_fn}vecB2, vecA4, sum8);
 
       pA+=4;
       pA2+=4;
@@ -728,14 +734,14 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum2 = ${mac_fn}(vecB2, vecA[0], sum2);
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum2 = ${mac_fn}(vecB4, vecA[1], sum2);
-      sum = ${mac_fn}(vecB5, vecA[2], sum);
-      sum2 = ${mac_fn}(vecB6, vecA[2], sum2);
-      sum = ${mac_fn}(vecB7, vecA[3], sum);
-      sum2 = ${mac_fn}(vecB8, vecA[3], sum2);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum2 = ${compute_fn}vecB2, vecA[0], sum2);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum2 = ${compute_fn}vecB4, vecA[1], sum2);
+      sum = ${compute_fn}vecB5, vecA[2], sum);
+      sum2 = ${compute_fn}vecB6, vecA[2], sum2);
+      sum = ${compute_fn}vecB7, vecA[3], sum);
+      sum2 = ${compute_fn}vecB8, vecA[3], sum2);
 
       pB+=16;
       pB2+=16;
@@ -747,11 +753,11 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum2 = ${mac_fn}(vecB2, vecA[0], sum2);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum2 = ${compute_fn}vecB2, vecA[0], sum2);
 
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum2 = ${mac_fn}(vecB4, vecA[1], sum2);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum2 = ${compute_fn}vecB4, vecA[1], sum2);
 
       pB+=8;
       pB2+=8;
@@ -760,8 +766,8 @@ ${pt_out} *${config.fn_name}(
       vecB = *((${vt_in}*) pB);
       vecB2 = *((${vt_in}*) pB2);
 
-      sum = ${mac_fn}(vecB, vecA, sum);
-      sum2 = ${mac_fn}(vecB2, vecA, sum2);
+      sum = ${compute_fn}vecB, vecA, sum);
+      sum2 = ${compute_fn}vecB2, vecA, sum2);
 
       pA+=4;
       pB+=4;

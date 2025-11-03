@@ -36,7 +36,7 @@ else:
 #include "pulp.h"
 #endif
 
-#define DEBUG_PRINTF(...) if (pi_core_id() == 0) printf(__VA_ARGS__);
+#define DEBUG_PRINTF(...) if (pi_core_id() == 1) printf(__VA_ARGS__);
 
 
 #define bitext(x,size,off)                                      __builtin_pulp_bextract(x,size,off)
@@ -639,15 +639,6 @@ vt_in = f"v4{'u' if not signed else 's'}"
 static int __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-% if w_prec < 8:
-  // unpack the weight 
-  W_vec = pulp_nn_i${w_prec}_to_i8_r((int8_t *)&W_vec);
-% endif
-% if in_prec < 8:
-  // unpack the input
-  X_vec = pulp_nn_${in_t}_to_${in_prefix}8_r((${'u' if signed else ''}int8_t *)&X_vec);
-% endif
 
   const int in_bits = ${in_prec};
   const int w_bits = ${w_prec};

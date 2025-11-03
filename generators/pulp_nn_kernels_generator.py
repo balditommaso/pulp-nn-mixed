@@ -42,27 +42,29 @@ def main():
                         for q in pulp_nn_init.PULPNNQuantizationMethods:
                             for sgn_in, sgn_out in product([False, True], [False, True]):
                                 for m in pulp_nn_init.MATMUL_FORMAT:
-                                    kernel_to_test = pulp_nn_factory.PULPNNKernel(
-                                        name='convolution', 
-                                        inp=i, 
-                                        out=j, 
-                                        wt=z, 
-                                        quant=q, 
-                                        act_prec=a, 
-                                        ext=e, 
-                                        mm_fmt=m, 
-                                        in_signed=sgn_in, 
-                                        out_signed=sgn_out
-                                    )
-                                    conv=pulp_nn_factory.PULPNNConvolve(
-                                        kernel=kernel_to_test, 
-                                        layer=None
-                                    )
-                                    pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
-                                        path_tag='convolution', 
-                                        comp=conv, 
-                                        api=pulp_nn_init.PULPNNAPI
-                                    )
+                                    for lut in [False, True]:
+                                        kernel_to_test = pulp_nn_factory.PULPNNKernel(
+                                            name='convolution', 
+                                            inp=i, 
+                                            out=j, 
+                                            wt=z, 
+                                            quant=q, 
+                                            act_prec=a, 
+                                            ext=e, 
+                                            mm_fmt=m, 
+                                            in_signed=sgn_in, 
+                                            out_signed=sgn_out,
+                                            lut=lut
+                                        )
+                                        conv=pulp_nn_factory.PULPNNConvolve(
+                                            kernel=kernel_to_test, 
+                                            layer=None
+                                        )
+                                        pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
+                                            path_tag='convolution', 
+                                            comp=conv, 
+                                            api=pulp_nn_init.PULPNNAPI
+                                        )
 
             if e == "XpulpNN":
                 for i in pulp_nn_init.PULPNNDataPrecisions:
@@ -126,27 +128,29 @@ def main():
                     for j in pulp_nn_init.PULPNNWeightsPrecisions:
                         for q in pulp_nn_init.PULPNNQuantizationMethods:
                             for sgn_in, sgn_out in product([False, True], [False, True]):
-                                kernel_to_test = pulp_nn_factory.PULPNNKernel(
-                                    name='matmul', 
-                                    inp=8, 
-                                    out=i, 
-                                    wt=j, 
-                                    quant=q, 
-                                    act_prec=a, 
-                                    ext=e, 
-                                    mm_fmt='4x2', 
-                                    in_signed=sgn_in, 
-                                    out_signed=sgn_out
-                                )
-                                matmul=pulp_nn_factory.PULPNNMatMul(
-                                    kernel=kernel_to_test, 
-                                    layer=None
-                                )
-                                pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
-                                    path_tag='matmul', 
-                                    comp=matmul, 
-                                    api=pulp_nn_init.PULPNNAPI
-                                )
+                                for lut in [False, True]:
+                                    kernel_to_test = pulp_nn_factory.PULPNNKernel(
+                                        name='matmul', 
+                                        inp=8, 
+                                        out=i, 
+                                        wt=j, 
+                                        quant=q, 
+                                        act_prec=a, 
+                                        ext=e, 
+                                        mm_fmt='4x2', 
+                                        in_signed=sgn_in, 
+                                        out_signed=sgn_out,
+                                        lut=lut
+                                    )
+                                    matmul=pulp_nn_factory.PULPNNMatMul(
+                                        kernel=kernel_to_test, 
+                                        layer=None
+                                    )
+                                    pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
+                                        path_tag='matmul', 
+                                        comp=matmul, 
+                                        api=pulp_nn_init.PULPNNAPI
+                                    )
 
             elif e == 'XpulpNN':
                 for i in pulp_nn_init.PULPNNDataPrecisions:
@@ -192,7 +196,7 @@ def main():
                                         quant=q, 
                                         act_prec=a, 
                                         ext=e, 
-                                        mm_fmt=m
+                                        mm_fmt=m,
                                     )
                                     matmul=pulp_nn_factory.PULPNNMatMul(
                                         kernel=kernel_to_test, 

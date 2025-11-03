@@ -28,7 +28,7 @@
 #include "pulp.h"
 #endif
 
-#define DEBUG_PRINTF(...) if (pi_core_id() == 0) printf(__VA_ARGS__);
+#define DEBUG_PRINTF(...) if (pi_core_id() == 1) printf(__VA_ARGS__);
 
 
 #define bitext(x,size,off)                                      __builtin_pulp_bextract(x,size,off)
@@ -778,11 +778,6 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
 static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_u2_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 2;
@@ -814,11 +809,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_i2_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 2;
@@ -851,11 +841,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_u2_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 4;
@@ -887,11 +872,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_i2_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 4;
@@ -924,9 +904,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the input
-  X_vec = pulp_nn_u2_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 8;
@@ -958,9 +935,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i8(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the input
-  X_vec = pulp_nn_i2_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 2;
   const int w_bits = 8;
@@ -993,11 +967,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i8(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_u4_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 2;
@@ -1029,11 +998,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_i4_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 2;
@@ -1066,11 +1030,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_u4_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 4;
@@ -1102,11 +1061,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
-  // unpack the input
-  X_vec = pulp_nn_i4_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 4;
@@ -1139,9 +1093,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the input
-  X_vec = pulp_nn_u4_to_u8_r((int8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 8;
@@ -1173,9 +1124,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i8(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the input
-  X_vec = pulp_nn_i4_to_i8_r((uint8_t *)&X_vec);
 
   const int in_bits = 4;
   const int w_bits = 8;
@@ -1208,9 +1156,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i8(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
 
   const int in_bits = 8;
   const int w_bits = 2;
@@ -1242,9 +1187,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i2_to_i8_r((int8_t *)&W_vec);
 
   const int in_bits = 8;
   const int w_bits = 2;
@@ -1277,9 +1219,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i2(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
 
   const int in_bits = 8;
   const int w_bits = 4;
@@ -1311,9 +1250,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
-  // unpack the weight 
-  W_vec = pulp_nn_i4_to_i8_r((int8_t *)&W_vec);
 
   const int in_bits = 8;
   const int w_bits = 4;
@@ -1346,7 +1282,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i4(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
 
   const int in_bits = 8;
   const int w_bits = 8;
@@ -1378,7 +1313,6 @@ static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i8(const uint8_t *pL
 static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
   const int32_t *ptr_lut = pLUT; 
-  
 
   const int in_bits = 8;
   const int w_bits = 8;

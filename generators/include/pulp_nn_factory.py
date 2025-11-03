@@ -204,23 +204,35 @@ class PULPNNConvolve(PULPNNFactory):
     def __init__(self, kernel, layer):
         super().__init__(kernel, layer)
         if self.kernel.extentions == 'XpulpV2':
-            self.fn_name = "pulp_nn_conv_{4}{0}_{5}{1}_i{2}{3}".format(
-                str(self.kernel.in_data_t), str(self.kernel.out_data_t), str(self.kernel.wt_data_t),
+            self.fn_name = "pulp_nn_conv_{6}{4}{0}_{5}{1}_i{2}{3}".format(
+                str(self.kernel.in_data_t), 
+                str(self.kernel.out_data_t), 
+                str(self.kernel.wt_data_t),
                 str("_" + self.kernel.quantization if self.kernel.quantization != "shift_clip" else ""), 
-                sgn_str(kernel.in_signed), sgn_str(kernel.out_signed)
+                sgn_str(kernel.in_signed), sgn_str(kernel.out_signed),
+                'lut_' if self.kernel.lut else '',
             )
             self.im2col_fn = "pulp_nn_im2col_{2}{0}_to_{2}{1}".format(
                 str(self.kernel.in_data_t), 
                 '8', 
                 sgn_str(kernel.in_signed)
             )
-            self.mat_mul_fn = "pulp_nn_matmul_{3}8_{4}{0}_i{1}{2}".format(str(
+            self.mat_mul_fn = "pulp_nn_matmul_{5}{3}8_{4}{0}_i{1}{2}".format(str(
                 self.kernel.out_data_t), 
                 str(self.kernel.wt_data_t),
                 str("_" + self.kernel.quantization if self.kernel.quantization != "shift_clip" else ""), 
-                sgn_str(kernel.in_signed), sgn_str(kernel.out_signed)
+                sgn_str(kernel.in_signed), 
+                sgn_str(kernel.out_signed),
+                'lut_' if self.kernel.lut else '',
+
             )
             self.unpack_fn = "pulp_nn_i{0}_to_i{1}".format(str(self.kernel.wt_data_t), '8')
+            # lut method 
+            self.lut_fn = "pulp_nn_look_up_{0}{1}_i32_i{2}".format(
+                sgn_str(kernel.in_signed),
+                str(self.kernel.in_data_t),
+                str(self.kernel.wt_data_t)
+            )
         elif self.kernel.extentions == 'XpulpNN':
             self.max_precision = max([self.kernel.in_data_t, self.kernel.wt_data_t])
             self.fn_name = "xpulp_nn_conv_{5}{0}_{6}{1}_i{2}{3}{4}".format(
@@ -501,14 +513,20 @@ class PULPNNMatMul(PULPNNFactory):
         super().__init__(kernel, layer)
 
         if self.kernel.extentions == 'XpulpV2':
-            self.fn_name = "pulp_nn_matmul_{3}8_{4}{0}_i{1}{2}".format(
+            self.fn_name = "pulp_nn_matmul_{5}{3}8_{4}{0}_i{1}{2}".format(
                 str(self.kernel.out_data_t),
                 str(self.kernel.wt_data_t),
                 str("_" + self.kernel.quantization if self.kernel.quantization != "shift_clip" else ""),
                 sgn_str(kernel.in_signed),
-                sgn_str(kernel.out_signed)
+                sgn_str(kernel.out_signed),
+                'lut_' if self.kernel.lut else '',
             )
             self.unpack_fn = "pulp_nn_i{0}_to_i{1}".format(str(self.kernel.wt_data_t), '8')
+            self.lut_fn = "pulp_nn_look_up_{0}{1}_i32_i{2}".format(
+                sgn_str(kernel.in_signed),
+                str(self.kernel.in_data_t),
+                str(self.kernel.wt_data_t)
+            )
         elif self.kernel.extentions == 'XpulpNN':
             self.max_precision = max([self.kernel.in_data_t, self.kernel.wt_data_t])
             self.fn_name = "xpulp_nn_matmul_{5}{0}_{6}{1}_i{2}{3}{4}".format(
