@@ -1347,7 +1347,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u2_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i < blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1370,7 +1370,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i2_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1393,7 +1393,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u4_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1416,7 +1416,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i4_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1439,7 +1439,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u8_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -1458,7 +1458,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i8_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
