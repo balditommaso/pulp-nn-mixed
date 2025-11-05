@@ -641,33 +641,36 @@ static void __attribute__((noinline)) pulp_nn_im2col_${src_t}_to_${dst_t}(${pt} 
 {
   unsigned int blkCnt = blockSize >> ${log_in_els_per_word}u;
   int lfover = blockSize & ${f"0x{in_els_per_word-1:02x}"};
-  for (int i = 0; i<blkCnt; i++)
+  for (unsigned int i = 0; i < blkCnt; i++)
   {
-  % if in_prec == 8:
+% if in_prec == 8:
     *((${vt}*)pOutput) = *((${vt}*)pInput);
     pInput+=4;
     pOutput+=4;
-  % else:
+% else:
     pInput = pulp_nn_${src_t}_to_${dst_t}(pInput, pOutput);
     MemoryFence();
     pOutput += ${in_els_per_word};
-  % endif
+% endif
   }
+
   while (lfover)
   {
-    % if in_prec == 8:
+% if in_prec == 8:
     *((${pt}*)pOutput) = *((${pt}*)pInput);
     pOutput++;
     pInput++;
     lfover--;
-    % else:
-    % for e in range(in_els_per_byte):
-    *((${pt}*)pOutput) = (${pt}) ${bex}((${"unsigned " if not signed else ""}int) *pInput, ${in_prec}, ${in_prec * e});
-    pOutput++;
-    % endfor
+% else:
+    for (unsigned int e = 0; e < ${in_els_per_byte}; e++)
+    {
+      if (lfover <= 0) break;
+      *((${pt}*)pOutput) = (${pt}) ${bex}((${"unsigned " if not signed else ""}int) *pInput, ${in_prec}, ${in_prec} * e);
+      pOutput++;
+      lfover--;
+    }
     pInput++;
-    lfover -= ${in_els_per_byte};
-    % endif
+% endif
   }
 }
 % endfor

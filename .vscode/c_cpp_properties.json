@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/pulp-sdk/**",
+                "/gap_riscv_toolchain_ubuntu_18/**",
+                "/pulp-sdk/rtos/pmsis/pmsis_bsp/include",
+                "/pulp-sdk/rtos/pmsis/pmsis_api/include",
+                "/pulp-sdk/rtos/pulpos/pulp_archi/include",
+                "/pulp-sdk/rtos/pulpos/pulp_hal/include",
+                "/pulp-sdk/rtos/pulpos/pulp/include",
+                "/pulp-sdk/rtos/pulpos/common/include",
+                "/pulp-sdk/rtos/pulpos/common/lib/omp/include",
+                "/pulp-sdk/rtos/pulpos/common/lib/libc/minimal/include",
+                "/pulp-sdk/rtos/pmsis/pmsis_api/include",
+                "/pulp-sdk/rtos/pmsis/pmsis_bsp/include"
+
+            ],
+            "defines": ["PULP_CHIP_STR=gap8"],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

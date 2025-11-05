@@ -773,100 +773,125 @@ static void __attribute__((noinline)) pulp_nn_im2col_u2_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
     pOutput += 16;
   }
+
   while (lfover)
   {
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 2, 0);
-    pOutput++;
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 2, 2);
-    pOutput++;
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 2, 4);
-    pOutput++;
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 2, 6);
-    pOutput++;
+    for (unsigned int e = 0; e < 4; e++)
+    {
+      if (lfover <= 0) break;
+      *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 2, 2 * e);
+      pOutput++;
+      lfover--;
+    }
     pInput++;
-    lfover -= 4;
   }
 }
 static void __attribute__((noinline)) pulp_nn_im2col_i2_to_i8(int8_t * pInput, int8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
     pOutput += 16;
   }
+
   while (lfover)
   {
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 2, 0);
-    pOutput++;
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 2, 2);
-    pOutput++;
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 2, 4);
-    pOutput++;
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 2, 6);
-    pOutput++;
+    for (unsigned int e = 0; e < 4; e++)
+    {
+      if (lfover <= 0) break;
+      *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 2, 2 * e);
+      pOutput++;
+      lfover--;
+    }
     pInput++;
-    lfover -= 4;
   }
 }
 static void __attribute__((noinline)) pulp_nn_im2col_u4_to_u8(uint8_t * pInput, uint8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
     pOutput += 8;
   }
+
   while (lfover)
   {
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 4, 0);
-    pOutput++;
-    *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 4, 4);
-    pOutput++;
+    for (unsigned int e = 0; e < 2; e++)
+    {
+      if (lfover <= 0) break;
+      *((uint8_t*)pOutput) = (uint8_t) bitextu((unsigned int) *pInput, 4, 4 * e);
+      pOutput++;
+      lfover--;
+    }
     pInput++;
-    lfover -= 2;
   }
 }
 static void __attribute__((noinline)) pulp_nn_im2col_i4_to_i8(int8_t * pInput, int8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
     pOutput += 8;
   }
+
   while (lfover)
   {
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 4, 0);
-    pOutput++;
-    *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 4, 4);
-    pOutput++;
+    for (unsigned int e = 0; e < 2; e++)
+    {
+      if (lfover <= 0) break;
+      *((int8_t*)pOutput) = (int8_t) bitext((int) *pInput, 4, 4 * e);
+      pOutput++;
+      lfover--;
+    }
     pInput++;
-    lfover -= 2;
   }
 }
 static void __attribute__((noinline)) pulp_nn_im2col_u8_to_u8(uint8_t * pInput, uint8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
     pOutput+=4;
   }
+
   while (lfover)
   {
     *((uint8_t*)pOutput) = *((uint8_t*)pInput);
@@ -879,12 +904,17 @@ static void __attribute__((noinline)) pulp_nn_im2col_i8_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
+<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
+=======
+  for (unsigned int i = 0; i < blkCnt; i++)
+>>>>>>> Stashed changes
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
     pOutput+=4;
   }
+
   while (lfover)
   {
     *((int8_t*)pOutput) = *((int8_t*)pInput);
