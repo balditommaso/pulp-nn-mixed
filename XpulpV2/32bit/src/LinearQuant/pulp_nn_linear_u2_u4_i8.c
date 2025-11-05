@@ -58,7 +58,7 @@ void pulp_nn_linear_u2_u4_i8(
     int32_t *k1 = pKappa + start;
     int32_t *lambda1 = pLambda + start;
 
-    for(i=start; i<stop; i+=2)
+    for(i = start; i < stop; i += 2)
     {
         int sum = 0;
         int sum2 = 0;

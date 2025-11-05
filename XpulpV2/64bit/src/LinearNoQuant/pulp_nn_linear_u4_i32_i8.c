@@ -48,7 +48,7 @@ void pulp_nn_linear_u4_i32_i8(
     int stop_even = stop - lft_neurons;
     int i;
 
-    for(i=start; i<stop_even; i+=2)
+    for(i = start; i < stop_even; i += 2)
     {
         int sum = 0;
         int sum2 = 0;
@@ -62,43 +62,45 @@ void pulp_nn_linear_u4_i32_i8(
         int8_t *pB = pWeight + (i * dim_vec_wt);
         int8_t *pB2 = pB + dim_vec_wt;
 
-        for (int j=0; j<(dim_vec >> 3); j++)
+        for (int j = 0; j < (dim_vec >> 3); j++)
         {
-             pulp_nn_u4_to_u8(pA,vecA);
+            pulp_nn_u4_to_u8(pA,vecA);
             vecB[0] = *((v4s*)pB);
             vecB2[0] = *((v4s*)pB2);
             pB+=4;
             pB2+=4;
             vecB[1] = *((v4s*)pB);
             vecB2[1] = *((v4s*)pB2);
-                sum = SumDotp4(vecA[0], vecB[0], sum);
-                  sum = SumDotp4(vecA[1], vecB[1], sum);
-                  sum2 = SumDotp4(vecA[0], vecB2[0], sum2);
-                  sum2 = SumDotp4(vecA[1], vecB2[1], sum2);
-                  pA+=4;
-                  pB+=4;
-                  pB2+=4;
+            sum = SumDotp4(vecA[0], vecB[0], sum);
+            sum = SumDotp4(vecA[1], vecB[1], sum);
+            sum2 = SumDotp4(vecA[0], vecB2[0], sum2);
+            sum2 = SumDotp4(vecA[1], vecB2[1], sum2);
+            pA+=4;
+            pB+=4;
+            pB2+=4;
         }
-            uint16_t col_cnt = dim_vec & 0x7;
-            while (col_cnt)
-            {
-                  uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 4, 0);
-                  uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 4, 4);
-                  pA++;
-                  int8_t inB = *pB;
-                  pB++;
-                  int8_t inB2 = *pB;
-                  pB++;
-                  int8_t inB5 = *pB2;
-                  pB2++;
-                  int8_t inB6 = *pB2;
-                  pB2++;
+
+        uint16_t col_cnt = dim_vec & 0x7;
+        while (col_cnt)
+        {
+            uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 4, 0);
+            uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 4, 4);
+            pA++;
+            int8_t inB = *pB;
+            pB++;
+            int8_t inB2 = *pB;
+            pB++;
+            int8_t inB5 = *pB2;
+            pB2++;
+            int8_t inB6 = *pB2;
+            pB2++;
             sum += inA * inB;
             sum += inA2 * inB2;
             sum2 += inA * inB5;
             sum2 += inA2 * inB6;
-                  col_cnt--;
-            }
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
         *pOutBuffer = sum2;
@@ -115,33 +117,36 @@ void pulp_nn_linear_u4_i32_i8(
         uint8_t *pA = pIn;
         int8_t *pB = pWeight + (i * dim_vec_wt);
 
-        for (int j=0; j<(dim_vec >> 3); j++)
+        for (int j = 0; j < (dim_vec >> 3); j++)
         {
             pulp_nn_u4_to_u8(pA,vecA);
             vecB[0] = *((v4s*)pB);
             pB+=4;
             vecB[1] = *((v4s*)pB);
             sum = SumDotp4(vecA[0], vecB[0], sum);
-              sum = SumDotp4(vecA[1], vecB[1], sum);
-           pA+=4;
-           pB+=4;
+            sum = SumDotp4(vecA[1], vecB[1], sum);
+            pA+=4;
+            pB+=4;
         }
-            uint16_t col_cnt = dim_vec & 0x7;
-            while (col_cnt)
-            {
-                  uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 4, 0);
-                  uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 4, 4);
-                  pA++;
-                  int8_t inB = *pB;
-                  pB++;
-                  int8_t inB2 = *pB;
-                  pB++;
+        uint16_t col_cnt = dim_vec & 0x7;
+
+        while (col_cnt)
+        {
+            uint8_t inA = (uint8_t) bitextu((uint32_t) *pA, 4, 0);
+            uint8_t inA2 = (uint8_t) bitextu((uint32_t) *pA, 4, 4);
+            pA++;
+            int8_t inB = *pB;
+            pB++;
+            int8_t inB2 = *pB;
+            pB++;
             sum += inA * inB;
             sum += inA2 * inB2;
-                  col_cnt--;
-            }
+            col_cnt--;
+        }
+
         *pOutBuffer = sum;
         pOutBuffer++;
     }
+    
     pi_cl_team_barrier(0);
 }

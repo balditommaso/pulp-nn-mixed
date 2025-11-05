@@ -20,6 +20,7 @@
 #include "pmsis.h"
 #include "pulp_nn_utils.h"
 
+## utility method for the template
 <%
 act_prec = int(config.kernel.act_prec[0:2])
 act_t = f"int{act_prec}_t"
@@ -34,8 +35,11 @@ def s_(sgn):
 pt_in = f"{u_(config.kernel.in_signed)}int8_t"
 vt_in = f"v4{su(config.kernel.in_signed)}"
 pt_out = f"{u_(config.kernel.out_signed)}int8_t"
-mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4"
+mac_fn = f"SumDotp{s_(config.kernel.in_signed)}4("
 out_clip_fn = f"clip{s_(config.kernel.out_signed)}{config.kernel.out_data_t}"
+compute_fn = mac_fn
+if config.kernel.lut:
+  compute_fn = f"{config.lut_fn}(pLUT, "
 %>
 
 ${pt_out} *${config.fn_name}(
@@ -44,6 +48,9 @@ ${pt_out} *${config.fn_name}(
                         ${pt_out} *pOut,
                         ${pt_out} *pOut2,
                         int8_t *pWeight,
+%if config.kernel.lut:
+                        int8_t *pLUT,
+%endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mult,
@@ -53,6 +60,7 @@ ${pt_out} *${config.fn_name}(
                         uint8_t flag_relu,
                         uint8_t flag_batch_norm)
 {
+## sub-byte packet-in utility
 %if config.kernel.out_data_t == 2:
   int8_t mask2 = 0x0c;
   int8_t n_mask2 = ~ mask2;
@@ -68,6 +76,7 @@ ${pt_out} *${config.fn_name}(
   int8_t n_mask = ~ mask;
   int8_t off = 0x04;
 %endif
+## tmp variable for the computation
 %if config.kernel.wt_data_t == 2:
   v4s vecA[4];
   v4s vecA2[4];
@@ -95,6 +104,7 @@ ${pt_out} *${config.fn_name}(
   ${vt_in} vecB;
   ${vt_in} vecB2;
 
+## align the length of the data to parallelization
 %if config.kernel.out_data_t == 2:
   uint16_t ch_out_r = ch_out >> 2;
 %elif config.kernel.out_data_t == 4:
@@ -113,16 +123,19 @@ ${pt_out} *${config.fn_name}(
   //uint8_t *pOut2 = pOut + ch_out_r;
   int8_t *pA = pWeight;
 
+  ## look for un-processed data
   uint16_t chan_left = ch_out & 0x3;
 
   for(int i=0; i < (ch_out >> 2); i++)
   {
+## setup the pointers
     ${pt_in} *pB =  pIn;
     ${pt_in} *pB2 = (pB + num_col_im2col);
     int8_t *pA2 = (pA + num_col_im2col_w);
     int8_t *pA3 = (pA2 + num_col_im2col_w);
     int8_t *pA4 = (pA3 + num_col_im2col_w);
 
+## computes 4 out-channels per 2 spatial position
     int sum = 0;
     int sum2 = 0;
     int sum3 = 0;
@@ -134,6 +147,7 @@ ${pt_out} *${config.fn_name}(
 
     if (pBias != NULL)
     {
+## init the accomulators with the biases
       sum = *((int*)  pBias);
       pBias+= 4;
       sum2 = *((int*)  pBias);
@@ -149,9 +163,11 @@ ${pt_out} *${config.fn_name}(
       sum8 = sum4;
     }
 
+## START inner loop
     for(int j=0; j<(num_col_im2col_w >> 2); j++)
     {
 %if config.kernel.wt_data_t == 2:
+## load the input vector
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
       vecB3 = *((${vt_in}*)(pB + 4));
@@ -164,49 +180,51 @@ ${pt_out} *${config.fn_name}(
       pB+=16;
       pB2+=16;
 
+## unpack the weight
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum5 = ${mac_fn}(vecB2, vecA[0], sum5);
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum5 = ${mac_fn}(vecB4, vecA[1], sum5);
-      sum = ${mac_fn}(vecB5, vecA[2], sum);
-      sum5 = ${mac_fn}(vecB6, vecA[2], sum5);
-      sum = ${mac_fn}(vecB7, vecA[3], sum);
-      sum5 = ${mac_fn}(vecB8, vecA[3], sum5);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum5 = ${compute_fn}vecB2, vecA[0], sum5);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum5 = ${compute_fn}vecB4, vecA[1], sum5);
+      sum = ${compute_fn}vecB5, vecA[2], sum);
+      sum5 = ${compute_fn}vecB6, vecA[2], sum5);
+      sum = ${compute_fn}vecB7, vecA[3], sum);
+      sum5 = ${compute_fn}vecB8, vecA[3], sum5);
 
       pA2 = ${config.unpack_fn}(pA2,vecA2);
 
-      sum2 = ${mac_fn}(vecB, vecA2[0], sum2);
-      sum6 = ${mac_fn}(vecB2, vecA2[0], sum6);
-      sum2 = ${mac_fn}(vecB3, vecA2[1], sum2);
-      sum6 = ${mac_fn}(vecB4, vecA2[1], sum6);
-      sum2 = ${mac_fn}(vecB5, vecA2[2], sum2);
-      sum6 = ${mac_fn}(vecB6, vecA2[2], sum6);
-      sum2 = ${mac_fn}(vecB7, vecA2[3], sum2);
-      sum6 = ${mac_fn}(vecB8, vecA2[3], sum6);
+      sum2 = ${compute_fn}vecB, vecA2[0], sum2);
+      sum6 = ${compute_fn}vecB2, vecA2[0], sum6);
+      sum2 = ${compute_fn}vecB3, vecA2[1], sum2);
+      sum6 = ${compute_fn}vecB4, vecA2[1], sum6);
+      sum2 = ${compute_fn}vecB5, vecA2[2], sum2);
+      sum6 = ${compute_fn}vecB6, vecA2[2], sum6);
+      sum2 = ${compute_fn}vecB7, vecA2[3], sum2);
+      sum6 = ${compute_fn}vecB8, vecA2[3], sum6);
 
       pA3 = ${config.unpack_fn}(pA3,vecA3);
 
-      sum3 = ${mac_fn}(vecB, vecA3[0], sum3);
-      sum7 = ${mac_fn}(vecB2, vecA3[0], sum7);
-      sum3 = ${mac_fn}(vecB3, vecA3[1], sum3);
-      sum7 = ${mac_fn}(vecB4, vecA3[1], sum7);
-      sum3 = ${mac_fn}(vecB5, vecA3[2], sum3);
-      sum7 = ${mac_fn}(vecB6, vecA3[2], sum7);
-      sum3 = ${mac_fn}(vecB7, vecA3[3], sum3);
-      sum7 = ${mac_fn}(vecB8, vecA3[3], sum7);
+      sum3 = ${compute_fn}vecB, vecA3[0], sum3);
+      sum7 = ${compute_fn}vecB2, vecA3[0], sum7);
+      sum3 = ${compute_fn}vecB3, vecA3[1], sum3);
+      sum7 = ${compute_fn}vecB4, vecA3[1], sum7);
+      sum3 = ${compute_fn}vecB5, vecA3[2], sum3);
+      sum7 = ${compute_fn}vecB6, vecA3[2], sum7);
+      sum3 = ${compute_fn}vecB7, vecA3[3], sum3);
+      sum7 = ${compute_fn}vecB8, vecA3[3], sum7);
 
       pA4 = ${config.unpack_fn}(pA4,vecA4);
 
-      sum4 = ${mac_fn}(vecB, vecA4[0], sum4);
-      sum8 = ${mac_fn}(vecB2, vecA4[0], sum8);
-      sum4 = ${mac_fn}(vecB3, vecA4[1], sum4);
-      sum8 = ${mac_fn}(vecB4, vecA4[1], sum8);
-      sum4 = ${mac_fn}(vecB5, vecA4[2], sum4);
-      sum8 = ${mac_fn}(vecB6, vecA4[2], sum8);
-      sum4 = ${mac_fn}(vecB7, vecA4[3], sum4);
-      sum8 = ${mac_fn}(vecB8, vecA4[3], sum8);
+      sum4 = ${compute_fn}vecB, vecA4[0], sum4);
+      sum8 = ${compute_fn}vecB2, vecA4[0], sum8);
+      sum4 = ${compute_fn}vecB3, vecA4[1], sum4);
+      sum8 = ${compute_fn}vecB4, vecA4[1], sum8);
+      sum4 = ${compute_fn}vecB5, vecA4[2], sum4);
+      sum8 = ${compute_fn}vecB6, vecA4[2], sum8);
+      sum4 = ${compute_fn}vecB7, vecA4[3], sum4);
+      sum8 = ${compute_fn}vecB8, vecA4[3], sum8);
+## precision 4
 %elif config.kernel.wt_data_t == 4:
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
@@ -218,35 +236,36 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum5 = ${mac_fn}(vecB2, vecA[0], sum5);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum5 = ${compute_fn}vecB2, vecA[0], sum5);
 
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum5 = ${mac_fn}(vecB4, vecA[1], sum5);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum5 = ${compute_fn}vecB4, vecA[1], sum5);
 
       pA2 = ${config.unpack_fn}(pA2,vecA2);
 
-      sum2 = ${mac_fn}(vecB, vecA2[0], sum2);
-      sum6 = ${mac_fn}(vecB2, vecA2[0], sum6);
+      sum2 = ${compute_fn}vecB, vecA2[0], sum2);
+      sum6 = ${compute_fn}vecB2, vecA2[0], sum6);
 
-      sum2 = ${mac_fn}(vecB3, vecA2[1], sum2);
-      sum6 = ${mac_fn}(vecB4, vecA2[1], sum6);
+      sum2 = ${compute_fn}vecB3, vecA2[1], sum2);
+      sum6 = ${compute_fn}vecB4, vecA2[1], sum6);
 
       pA3 = ${config.unpack_fn}(pA3,vecA3);
 
-      sum3 = ${mac_fn}(vecB, vecA3[0], sum3);
-      sum7 = ${mac_fn}(vecB2, vecA3[0], sum7);
+      sum3 = ${compute_fn}vecB, vecA3[0], sum3);
+      sum7 = ${compute_fn}vecB2, vecA3[0], sum7);
 
-      sum3 = ${mac_fn}(vecB3, vecA3[1], sum3);
-      sum7 = ${mac_fn}(vecB4, vecA3[1], sum7);
+      sum3 = ${compute_fn}vecB3, vecA3[1], sum3);
+      sum7 = ${compute_fn}vecB4, vecA3[1], sum7);
 
       pA4 = ${config.unpack_fn}(pA4,vecA4);
 
-      sum4 = ${mac_fn}(vecB, vecA4[0], sum4);
-      sum8 = ${mac_fn}(vecB2, vecA4[0], sum8);
+      sum4 = ${compute_fn}vecB, vecA4[0], sum4);
+      sum8 = ${compute_fn}vecB2, vecA4[0], sum8);
 
-      sum4 = ${mac_fn}(vecB3, vecA4[1], sum4);
-      sum8 = ${mac_fn}(vecB4, vecA4[1], sum8);
+      sum4 = ${compute_fn}vecB3, vecA4[1], sum4);
+      sum8 = ${compute_fn}vecB4, vecA4[1], sum8);
+## precision 2
 %else:
       vecA = *((v4s*)pA);
       vecA2 = *((v4s*)pA2);
@@ -256,15 +275,15 @@ ${pt_out} *${config.fn_name}(
       vecB = *((${vt_in}*)pB);
       vecB2 = *((${vt_in}*)pB2);
 
-      sum = ${mac_fn}(vecB, vecA, sum );
-      sum2 = ${mac_fn}(vecB, vecA2, sum2);
-      sum3 = ${mac_fn}(vecB, vecA3, sum3);
-      sum4 = ${mac_fn}(vecB, vecA4, sum4);
+      sum = ${compute_fn}vecB, vecA, sum );
+      sum2 = ${compute_fn}vecB, vecA2, sum2);
+      sum3 = ${compute_fn}vecB, vecA3, sum3);
+      sum4 = ${compute_fn}vecB, vecA4, sum4);
 
-      sum5 = ${mac_fn}(vecB2, vecA, sum5);
-      sum6 = ${mac_fn}(vecB2, vecA2, sum6);
-      sum7 = ${mac_fn}(vecB2, vecA3, sum7);
-      sum8 = ${mac_fn}(vecB2, vecA4, sum8);
+      sum5 = ${compute_fn}vecB2, vecA, sum5);
+      sum6 = ${compute_fn}vecB2, vecA2, sum6);
+      sum7 = ${compute_fn}vecB2, vecA3, sum7);
+      sum8 = ${compute_fn}vecB2, vecA4, sum8);
 
       pA+=4;
       pA2+=4;
@@ -402,7 +421,9 @@ ${pt_out} *${config.fn_name}(
       col_cnt_im2col--;
 %endif
     }
+## END inner loop
 %if config.kernel.out_data_t == 8 or config.kernel.quantization == 'shift_clip':
+## BN + ReLU + Quant
     if (flag_batch_norm && flag_relu)
     {
 %if config.kernel.out_data_t == 8:
@@ -488,6 +509,7 @@ ${pt_out} *${config.fn_name}(
     else
     {
       if (flag_relu == 1)
+## ReLU + Quant
       {
 %if config.kernel.out_data_t == 8:
         *pOut = ${config.relu_fn}(sum, out_mult, out_shift);
@@ -545,6 +567,7 @@ ${pt_out} *${config.fn_name}(
 %endif
       }
       else
+## only Quant
       {
 %if config.kernel.out_data_t == 8:
         *pOut = (uint8_t) clip8(sum >> out_shift);
@@ -681,6 +704,7 @@ ${pt_out} *${config.fn_name}(
   %if config.kernel.out_data_t == 4:
    uint16_t i = 0;
   %endif
+## compute the channel left
    while(chan_left)
   {
     ${pt_in} *pB = pIn;
@@ -710,14 +734,14 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum2 = ${mac_fn}(vecB2, vecA[0], sum2);
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum2 = ${mac_fn}(vecB4, vecA[1], sum2);
-      sum = ${mac_fn}(vecB5, vecA[2], sum);
-      sum2 = ${mac_fn}(vecB6, vecA[2], sum2);
-      sum = ${mac_fn}(vecB7, vecA[3], sum);
-      sum2 = ${mac_fn}(vecB8, vecA[3], sum2);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum2 = ${compute_fn}vecB2, vecA[0], sum2);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum2 = ${compute_fn}vecB4, vecA[1], sum2);
+      sum = ${compute_fn}vecB5, vecA[2], sum);
+      sum2 = ${compute_fn}vecB6, vecA[2], sum2);
+      sum = ${compute_fn}vecB7, vecA[3], sum);
+      sum2 = ${compute_fn}vecB8, vecA[3], sum2);
 
       pB+=16;
       pB2+=16;
@@ -729,11 +753,11 @@ ${pt_out} *${config.fn_name}(
 
       pA = ${config.unpack_fn}(pA,vecA);
 
-      sum = ${mac_fn}(vecB, vecA[0], sum);
-      sum2 = ${mac_fn}(vecB2, vecA[0], sum2);
+      sum = ${compute_fn}vecB, vecA[0], sum);
+      sum2 = ${compute_fn}vecB2, vecA[0], sum2);
 
-      sum = ${mac_fn}(vecB3, vecA[1], sum);
-      sum2 = ${mac_fn}(vecB4, vecA[1], sum2);
+      sum = ${compute_fn}vecB3, vecA[1], sum);
+      sum2 = ${compute_fn}vecB4, vecA[1], sum2);
 
       pB+=8;
       pB2+=8;
@@ -742,8 +766,8 @@ ${pt_out} *${config.fn_name}(
       vecB = *((${vt_in}*) pB);
       vecB2 = *((${vt_in}*) pB2);
 
-      sum = ${mac_fn}(vecB, vecA, sum);
-      sum2 = ${mac_fn}(vecB2, vecA, sum2);
+      sum = ${compute_fn}vecB, vecA, sum);
+      sum2 = ${compute_fn}vecB2, vecA, sum2);
 
       pA+=4;
       pB+=4;

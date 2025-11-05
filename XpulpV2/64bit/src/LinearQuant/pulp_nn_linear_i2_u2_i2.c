@@ -71,7 +71,7 @@ void pulp_nn_linear_i2_u2_i2(
     int64_t *k1 = pKappa + start;
     int64_t *lambda1 = pLambda + start;
 
-    for(i=start; i<stop; i+=4)
+    for(i = start; i < stop; i += 4)
     {
         int sum = 0;
         int sum2 = 0;

@@ -14,6 +14,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+% if "lut" in config.fn_name:
+                        int8_t *pLUT,
+% endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mul,
@@ -94,6 +97,9 @@ uint8_t *${config.fn_name}(
                         ${pt_out} *pOut4,
 %endif
                         int8_t *pWeight,
+% if "lut" in config.fn_name:
+                        int8_t *pLUT,
+% endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mul,
@@ -109,6 +115,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+% if "lut" in config.fn_name:
+                        int8_t *pLUT,
+% endif
                         int8_t *pWtBuffer,
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
@@ -136,6 +145,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+% if "lut" in config.fn_name:
+                        int8_t *pLUT,
+% endif
                         uint16_t dim_vec,
                         uint16_t num_o_neurons);
 %elif config.api=="PULPNNLinearQuant":
@@ -144,6 +156,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+% if "lut" in config.fn_name:
+                        int8_t *pLUT,
+% endif
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
                         uint16_t out_mul,

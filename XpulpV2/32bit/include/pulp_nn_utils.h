@@ -22,10 +22,14 @@
 #ifndef __PULPNN_UTILS__
 #define __PULPNN_UTILS__
 
+#include <stdio.h>
 #include "pmsis.h"
 #ifdef GAP_SDK
 #include "pulp.h"
 #endif
+
+#define DEBUG_PRINTF(...) if (pi_core_id() == 1) printf(__VA_ARGS__);
+
 
 #define bitext(x,size,off)                                      __builtin_pulp_bextract(x,size,off)
 #define bitextu(x,size,off)                                     __builtin_pulp_bextractu(x,size,off)
@@ -565,7 +569,7 @@ static uint8_t *__attribute__((always_inline)) pulp_nn_u4_to_u8(uint8_t *pSrc, u
   return pSrc;
 }
 
-static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, int8_t * pDst)
+static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8(int8_t *pSrc, int8_t *pDst)
 {
   v4s Src = *((v4s*) pSrc);
   int8_t bext1, bext2, bext3, bext4;
@@ -602,7 +606,7 @@ static int8_t *__attribute__((always_inline)) pulp_nn_i2_to_i8( int8_t * pSrc, i
   return pSrc;
 }
 
-static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t * pSrc, uint8_t * pDst)
+static uint8_t *__attribute__((always_inline)) pulp_nn_u2_to_u8(uint8_t *pSrc, uint8_t *pDst)
 {
   v4u Src = *((v4u*) pSrc);
   uint8_t bext1, bext2, bext3, bext4;
@@ -769,15 +773,581 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
   }
 }
 
+
+
+static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u2_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i2_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 2;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u4_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i4_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 4;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 2;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 4;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_u8_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    int8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)X;
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+static int __attribute__((noinline)) pulp_nn_look_up_i8_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
+{
+  const int32_t *ptr_lut = pLUT; 
+
+  const int in_bits = 8;
+  const int w_bits = 8;
+  
+  // prepare the bias 
+  const int w_bias = 1 << (w_bits - 1);
+  const int in_bias = 1 << (in_bits - 1);
+
+  for (int i = 0; i < 4; i++) 
+  {
+    uint8_t X = X_vec[i];
+    int8_t W = W_vec[i];
+
+    // early return for zeros
+    if (X == 0 || W == 0) continue;
+
+    // mapping to the LUT domain
+    unsigned in_idx = (unsigned)(X + in_bias);
+    int w_idx = (unsigned)(W + w_bias);
+
+    int lut_idx = (in_idx << w_bits) + w_idx; 
+    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+
+    sum += prod;
+  }
+
+  return sum;
+}
+
+
 static void __attribute__((noinline)) pulp_nn_im2col_u2_to_u8(uint8_t * pInput, uint8_t * pOutput, unsigned int blockSize)
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
@@ -800,11 +1370,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i2_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
@@ -827,11 +1393,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u4_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
@@ -854,11 +1416,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i4_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
@@ -881,11 +1439,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_u8_to_u8(uint8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -904,11 +1458,7 @@ static void __attribute__((noinline)) pulp_nn_im2col_i8_to_i8(int8_t * pInput, i
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-<<<<<<< Updated upstream
   for (int i = 0; i<blkCnt; i++)
-=======
-  for (unsigned int i = 0; i < blkCnt; i++)
->>>>>>> Stashed changes
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -928,7 +1478,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u2(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -947,7 +1497,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i2(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -966,7 +1516,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u4(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u4(pInput, pOutput);
     MemoryFence();
@@ -987,7 +1537,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i4(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i4(pInput, pOutput);
     MemoryFence();
@@ -1008,7 +1558,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u2_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1033,7 +1583,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 4u;
   int lfover = blockSize & 0x0f;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i2_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1058,7 +1608,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u4_to_u4(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -1077,7 +1627,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i4_to_i4(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -1096,7 +1646,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u4_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_u4_to_u8(pInput, pOutput);
     MemoryFence();
@@ -1117,7 +1667,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i4_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 3u;
   int lfover = blockSize & 0x07;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     pInput = pulp_nn_i4_to_i8(pInput, pOutput);
     MemoryFence();
@@ -1138,7 +1688,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u8_to_u8(uint8_t * pInput,
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4u*)pOutput) = *((v4u*)pInput);
     pInput+=4;
@@ -1157,7 +1707,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i8_to_i8(int8_t * pInput, 
 {
   unsigned int blkCnt = blockSize >> 2u;
   int lfover = blockSize & 0x03;
-  for (int i = 0; i<blkCnt; i++)
+  for (int i = 0; i < blkCnt; i++)
   {
     *((v4s*)pOutput) = *((v4s*)pInput);
     pInput+=4;
@@ -1702,10 +2252,10 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u4(
     uint8_t inB0 = (uint8_t) bitextu((unsigned int) *pCom, 4, 0);
     uint8_t inB1 = (uint8_t) bitextu((unsigned int) *pCom, 4, 4);
 
-    if(inA0<inB0)
+    if(inA0 < inB0)
       inA0=inB0;
 
-    if(inA1<inB1)
+    if(inA1 < inB1)
       inA1=inB1;
 
     *((uint8_t*)pIn) = bitins(inA0, n_mask, inA1, mask, off);
@@ -1781,7 +2331,7 @@ static void __attribute__((noinline)) xpulp_nn_avg_and_replace_u4(uint8_t * base
 
   int left = length & 0x3;
 
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 4, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 4, 4);
@@ -1829,7 +2379,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_u2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     uint8_t inA0 = (uint8_t) bitextu((unsigned int) *pIn, 2, 0);
     uint8_t inA1 = (uint8_t) bitextu((unsigned int) *pIn, 2, 2);
@@ -1883,7 +2433,7 @@ static void __attribute__((noinline)) xpulp_nn_compare_and_replace_if_larger_i2(
   }
 
   int left = length & 0x3;
-  while (left>0u)
+  while (left > 0u)
   {
     int8_t inA0 = (int8_t) bitext((int) *pIn, 2, 0);
     int8_t inA1 = (int8_t) bitext((int) *pIn, 2, 2);
