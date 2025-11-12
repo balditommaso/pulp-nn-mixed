@@ -461,13 +461,19 @@ class PULPNNConvolveDepthwise(PULPNNFactory):
     def __init__(self, kernel, layer):
         super().__init__(kernel, layer)
         if self.kernel.extentions == 'XpulpV2':
-            self.fn_name = "pulp_nn_depthwise_{4}{0}_{5}{1}_i{2}{3}".format(
+            self.fn_name = "pulp_nn_depthwise_{6}{4}{0}_{5}{1}_i{2}{3}".format(
                 str(self.kernel.in_data_t),
                 str(self.kernel.out_data_t),
                 str(self.kernel.wt_data_t),
                 str("_" + self.kernel.quantization if self.kernel.quantization != "shift_clip" else ""),
                 sgn_str(kernel.in_signed),
-                sgn_str(kernel.out_signed)
+                sgn_str(kernel.out_signed),
+                'lut_' if self.kernel.lut else '',
+            )
+            self.lut_fn = "pulp_nn_look_up_{0}{1}_i32_i{2}".format(
+                sgn_str(kernel.in_signed),
+                str(self.kernel.in_data_t),
+                str(self.kernel.wt_data_t)
             )
         elif self.kernel.extentions == 'XpulpNN':
             self.fn_name = "xpulp_nn_depthwise_{4}{0}_{5}{1}_i{2}{3}".format(

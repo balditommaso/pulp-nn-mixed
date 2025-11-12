@@ -404,7 +404,7 @@ void pulp_nn_depthwise_i4_i4_i4(
             *(v4s *) pIm2Col2 = (v4s) {0, 0, 0, 0};
             pIm2Col2+=4;
             i++;
-          }while(i<dim_kernel_x_size_padded);
+          }while(i < dim_kernel_x_size_padded);
           pIm2Col-=dim_incr;
           pIm2Col2-=dim_incr;
           i_buff_y++;
@@ -460,7 +460,7 @@ void pulp_nn_depthwise_i4_i4_i4(
           *(v4s *) pIm2Col2 = (v4s) {0, 0, 0, 0};
           pIm2Col2+=4;
           i++;
-        }while(i<dim_kernel_x_size_padded);
+        } while (i < dim_kernel_x_size_padded);
         pIm2Col-=dim_incr;
         pIm2Col2-=dim_incr;
       }
@@ -493,8 +493,8 @@ void pulp_nn_depthwise_i4_i4_i4(
           pWt2 += 4;
           pIm2Col2 += 4;
           j++;
-        }while(j<colCnt);
-        for(int j=0; j<leftCnt; j++)
+        }while(j < colCnt);
+        for(int j=0; j < leftCnt; j++)
         {
           int8_t w = *(int8_t *) pWt++;
           int8_t x = *(int8_t *) pIm2Col++;

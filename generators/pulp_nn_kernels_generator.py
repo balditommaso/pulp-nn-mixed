@@ -214,29 +214,31 @@ def main():
                     for z in pulp_nn_init.PULPNNWeightsPrecisions:
                         for q in pulp_nn_init.PULPNNQuantizationMethods:
                             for sgn_in, sgn_out in product([False, True], [False, True]):
+                                for lut in [True, False]:
                             # TODO: add mixed depthwise kernels
-                                if e != 'XpulpNN-mixed':
-                                    kernel_to_test = pulp_nn_factory.PULPNNKernel(
-                                        name='depthwise', 
-                                        inp=i, 
-                                        out=j, 
-                                        wt=z, 
-                                        quant=q, 
-                                        act_prec=a, 
-                                        ext=e, 
-                                        mm_fmt='', 
-                                        in_signed=sgn_in, 
-                                        out_signed=sgn_out
-                                    )
-                                    dw=pulp_nn_factory.PULPNNConvolveDepthwise(
-                                        kernel=kernel_to_test, 
-                                        layer=None
-                                    )
-                                    pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
-                                        path_tag='depthwise', 
-                                        comp=dw, 
-                                        api=pulp_nn_init.PULPNNAPI
-                                    )
+                                    if e != 'XpulpNN-mixed':
+                                        kernel_to_test = pulp_nn_factory.PULPNNKernel(
+                                            name='depthwise', 
+                                            inp=i, 
+                                            out=j, 
+                                            wt=z, 
+                                            quant=q, 
+                                            act_prec=a, 
+                                            ext=e, 
+                                            mm_fmt='', 
+                                            in_signed=sgn_in, 
+                                            out_signed=sgn_out,
+                                            lut=lut
+                                        )
+                                        dw=pulp_nn_factory.PULPNNConvolveDepthwise(
+                                            kernel=kernel_to_test, 
+                                            layer=None
+                                        )
+                                        pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
+                                            path_tag='depthwise', 
+                                            comp=dw, 
+                                            api=pulp_nn_init.PULPNNAPI
+                                        )
 
             for i in pulp_nn_init.PULPNNDataPrecisions:
                 for z in pulp_nn_init.PULPNNWeightsPrecisions:
@@ -266,7 +268,6 @@ def main():
                                     comp=lin_nq, 
                                     api=pulp_nn_init.PULPNNAPI
                                 )
-                                pass
 
             for i in pulp_nn_init.PULPNNDataPrecisions:
                 for j in pulp_nn_init.PULPNNDataPrecisions:

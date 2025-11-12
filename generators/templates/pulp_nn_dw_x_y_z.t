@@ -34,9 +34,12 @@ pt_in = f"{u_(config.kernel.in_signed)}int8_t"
 vt_in = f"v4{su(config.kernel.in_signed)}"
 int_t_in = f"{u_(config.kernel.in_signed)}int32_t"
 pt_out = f"{u_(config.kernel.out_signed)}int8_t"
-sumdotp_fn = f"SumDotp{s_(config.kernel.in_signed)}4"
+sumdotp_fn = f"SumDotp{s_(config.kernel.in_signed)}4("
 out_clip_fn = f"clip{s_(config.kernel.out_signed)}{config.kernel.out_data_t}"
 bex = f"bitext{u_(config.kernel.in_signed)}"
+compute_fn = sumdotp_fn
+if config.kernel.lut:
+  compute_fn = f"{config.lut_fn}(pLUT, "
 %>
 
 void ${config.fn_name}(
@@ -45,6 +48,9 @@ void ${config.fn_name}(
                         int8_t *pBias,
                         ${pt_out} *pOut,
                         int8_t *pWeight,
+%if config.kernel.lut:
+                        int8_t *pLUT,
+%endif                        
                         int8_t *pWtBuffer,
                         ${act_t} *pKappa,
                         ${act_t} *pLambda,
@@ -574,39 +580,39 @@ void ${config.fn_name}(
   %if config.less_precision == 8:
             v4s w = *(v4s *) pWt;
             ${vt_in} x = *(${vt_in} *) pIm2Col;
-            sum = ${sumdotp_fn}(x, w, sum);
+            sum = ${compute_fn}x, w, sum);
             pWt += 4;
             pIm2Col += 4;
   %elif config.less_precision == 4:
             v4s w = *(v4s *) pWt;
             ${vt_in} x = *(${vt_in} *) pIm2Col;
-            sum = ${sumdotp_fn}(x, w, sum);
+            sum = ${compute_fn}x, w, sum);
             pWt += 4;
             pIm2Col += 4;
             v4s w2 = *(v4s *) pWt2;
             ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-            sum2 = ${sumdotp_fn}(x2, w2, sum2);
+            sum2 = ${compute_fn}x2, w2, sum2);
             pWt2 += 4;
             pIm2Col2 += 4;
   %elif config.less_precision == 2:
             v4s w = *(v4s *) pWt;
             ${vt_in} x = *(${vt_in} *) pIm2Col;
-            sum = ${sumdotp_fn}(x, w, sum);
+            sum = ${compute_fn}x, w, sum);
             pWt += 4;
             pIm2Col += 4;
             v4s w2 = *(v4s *) pWt2;
             ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-            sum2 = ${sumdotp_fn}(x2, w2, sum2);
+            sum2 = ${compute_fn}x2, w2, sum2);
             pWt2 += 4;
             pIm2Col2 += 4;
             v4s w3 = *(v4s *) pWt3;
             ${vt_in} x3 = *(${vt_in} *) pIm2Col3;
-            sum3 = ${sumdotp_fn}(x3, w3, sum3);
+            sum3 = ${compute_fn}x3, w3, sum3);
             pWt3 += 4;
             pIm2Col3 += 4;
             v4s w4 = *(v4s *) pWt4;
             ${vt_in} x4 = *(${vt_in} *) pIm2Col4;
-            sum4 = ${sumdotp_fn}(x4, w4, sum4);
+            sum4 = ${compute_fn}x4, w4, sum4);
             pWt4 += 4;
             pIm2Col4 += 4;
   %endif
@@ -1047,39 +1053,39 @@ void ${config.fn_name}(
 %if config.less_precision == 8:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
 %elif config.less_precision == 4:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
           v4s w2 = *(v4s *) pWt2;
           ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-          sum2 = ${sumdotp_fn}(x2, w2, sum2);
+          sum2 = ${compute_fn}x2, w2, sum2);
           pWt2 += 4;
           pIm2Col2 += 4;
 %elif config.less_precision == 2:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
           v4s w2 = *(v4s *) pWt2;
           ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-          sum2 = ${sumdotp_fn}(x2, w2, sum2);
+          sum2 = ${compute_fn}x2, w2, sum2);
           pWt2 += 4;
           pIm2Col2 += 4;
           v4s w3 = *(v4s *) pWt3;
           ${vt_in} x3 = *(${vt_in} *) pIm2Col3;
-          sum3 = ${sumdotp_fn}(x3, w3, sum3);
+          sum3 = ${compute_fn}x3, w3, sum3);
           pWt3 += 4;
           pIm2Col3 += 4;
           v4s w4 = *(v4s *) pWt4;
           ${vt_in} x4 = *(${vt_in} *) pIm2Col4;
-          sum4 = ${sumdotp_fn}(x4, w4, sum4);
+          sum4 = ${compute_fn}x4, w4, sum4);
           pWt4 += 4;
           pIm2Col4 += 4;
 %endif
@@ -1266,7 +1272,7 @@ void ${config.fn_name}(
             pIm2Col4+=4;
   %endif
             i++;
-          }while(i<dim_kernel_x_size_padded);
+          }while(i < dim_kernel_x_size_padded);
           pIm2Col-=dim_incr;
   %if config.less_precision == 4:
           pIm2Col2-=dim_incr;
@@ -1447,7 +1453,7 @@ void ${config.fn_name}(
           pIm2Col4+=4;
 %endif
           i++;
-        }while(i<dim_kernel_x_size_padded);
+        } while (i < dim_kernel_x_size_padded);
         pIm2Col-=dim_incr;
 %if config.less_precision == 4:
         pIm2Col2-=dim_incr;
@@ -1520,45 +1526,45 @@ void ${config.fn_name}(
 %if config.less_precision == 8:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
 %elif config.less_precision == 4:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
           v4s w2 = *(v4s *) pWt2;
           ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-          sum2 = ${sumdotp_fn}(x2, w2, sum2);
+          sum2 = ${compute_fn}x2, w2, sum2);
           pWt2 += 4;
           pIm2Col2 += 4;
 %elif config.less_precision == 2:
           v4s w = *(v4s *) pWt;
           ${vt_in} x = *(${vt_in} *) pIm2Col;
-          sum = ${sumdotp_fn}(x, w, sum);
+          sum = ${compute_fn}x, w, sum);
           pWt += 4;
           pIm2Col += 4;
           v4s w2 = *(v4s *) pWt2;
           ${vt_in} x2 = *(${vt_in} *) pIm2Col2;
-          sum2 = ${sumdotp_fn}(x2, w2, sum2);
+          sum2 = ${compute_fn}x2, w2, sum2);
           pWt2 += 4;
           pIm2Col2 += 4;
           v4s w3 = *(v4s *) pWt3;
           ${vt_in} x3 = *(${vt_in} *) pIm2Col3;
-          sum3 = ${sumdotp_fn}(x3, w3, sum3);
+          sum3 = ${compute_fn}x3, w3, sum3);
           pWt3 += 4;
           pIm2Col3 += 4;
           v4s w4 = *(v4s *) pWt4;
           ${vt_in} x4 = *(${vt_in} *) pIm2Col4;
-          sum4 = ${sumdotp_fn}(x4, w4, sum4);
+          sum4 = ${compute_fn}x4, w4, sum4);
           pWt4 += 4;
           pIm2Col4 += 4;
 %endif
           j++;
-        }while(j<colCnt);
-        for(int j=0; j<leftCnt; j++)
+        }while(j < colCnt);
+        for(int j=0; j < leftCnt; j++)
         {
 %if config.less_precision == 8:
           int8_t w = *(int8_t *) pWt++;
