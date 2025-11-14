@@ -1,23 +1,3 @@
-/*
- * pulp_nn_utils.h
- * Nazareno   Bruschi  <nazareno.bruschi@unibo.it>
- * Alessandro Nadalini <alessandro.nadalini3@unibo.it>
- * Georg Rutishauser   <georgr@iis.ee.ethz.ch>
- *
- * Copyright (C) 2019-2020 ETH Zurich & University of Bologna
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 #ifndef __PULPNN_UTILS__
 #define __PULPNN_UTILS__
@@ -1525,8 +1505,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_u2_to_u4(uint8_t * pInput,
   while (lfover)
   {
     uint8_t extr;
-    // TODO: this is potentially dangerous/wrong if the number of channels
-    // is not a multiple of 8!
+
     *((v4u *)pOutput) = pulp_nn_u2_to_u4_r(pInput);
     pInput += 2;
     pOutput += 4;
@@ -1546,8 +1525,7 @@ static void __attribute__((noinline)) xpulp_nn_im2col_i2_to_i4(int8_t * pInput, 
   while (lfover)
   {
     int8_t extr;
-    // TODO: this is potentially dangerous/wrong if the number of channels
-    // is not a multiple of 8!
+
     *((v4s *)pOutput) = pulp_nn_i2_to_i4_r(pInput);
     pInput += 2;
     pOutput += 4;

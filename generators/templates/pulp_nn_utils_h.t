@@ -1,23 +1,3 @@
-/*
- * pulp_nn_utils.h
- * Nazareno   Bruschi  <nazareno.bruschi@unibo.it>
- * Alessandro Nadalini <alessandro.nadalini3@unibo.it>
- * Georg Rutishauser   <georgr@iis.ee.ethz.ch>
- *
- * Copyright (C) 2019-2020 ETH Zurich & University of Bologna
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 <%
 from itertools import product
@@ -778,8 +758,6 @@ static void __attribute__((noinline)) xpulp_nn_im2col_${src_t}_to_${dst_t}(${pt}
     pInput++;
     lfover -= ${in_els_per_byte};
     % else :
-    // TODO: this is potentially dangerous/wrong if the number of channels
-    // is not a multiple of ${out_els_per_word}!
     *((${vt} *)pOutput) = pulp_nn_${src_t}_to_${dst_t}_r(pInput);
     pInput += ${out_els_per_word//in_els_per_byte};
     pOutput += 4;

@@ -61,7 +61,7 @@ in_signed = True
 out_precision 		= 2 # if is add layer, out_precision is the second input
 # precision
 out_signed = False
-quantization_type 	= 'shift_clip' # TODO / WARNING: THRESHOLD QUANTIZATION NOT
+quantization_type 	= 'shift_clip' 
 # SUPPORTED FOR SIGNED OUTPUT KERNELS
 
 # Select layer dimensions from supported ones:

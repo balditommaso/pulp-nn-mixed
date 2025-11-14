@@ -29,7 +29,6 @@ class PNNDataFormat:
         return 0
 
 
-# TODO add this https://pypi.org/project/enforce-typing/
 
 @dataclass
 class PNNVersion:
