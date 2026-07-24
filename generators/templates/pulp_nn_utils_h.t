@@ -370,7 +370,7 @@ static int8_t *__attribute__((always_inline)) pulp_nn_i4_to_i8( int8_t *pSrc, in
   bext3 = (int8_t) bitext((int) Src, 4, 8);
   bext4 = (int8_t) bitext((int) Src, 4, 12);
   *((v4s*)pDst) = pack((int8_t) bext1, (int8_t) bext2, (int8_t) bext3, (int8_t) bext4);
-   MemoryFence();
+  MemoryFence();
   pDst+=4;
   bext1 = (int8_t) bitext((int) Src, 4, 16);
   bext2 = (int8_t) bitext((int) Src, 4, 20);
