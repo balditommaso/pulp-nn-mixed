@@ -614,40 +614,52 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
 <%
 in_prefix = "i" if signed else "u"
 in_t = f"{in_prefix}{in_prec}"
-vt_in = f"v4{'u' if not signed else 's'}"
+vt_in = f"v4{'s' if signed else 'u'}"
 %>
-static int __attribute__((noinline)) pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
+static int __attribute__((noinline)) 
+pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = pLUT; 
+  const int32_t *ptr_lut = (const int32_t *)pLUT; 
 
-  const int in_bits = ${in_prec};
-  const int w_bits = ${w_prec};
+  const unsigned in_bits = ${in_prec};
+  const unsigned w_bits = ${w_prec};
   
-  // prepare the bias 
-  const int w_bias = 1 << (w_bits - 1);
-% if signed:
-  const int in_bias = 1 << (in_bits - 1);
-% endif
+  const unsigned num_w_mag = (1U << (w_bits - 1U)) + 1U;
 
   for (int i = 0; i < 4; i++) 
   {
-    ${'u' if signed else ''}int8_t X = X_vec[i];
-    int8_t W = W_vec[i];
+% if signed:
+    int32_t X = (int32_t)(int8_t)X_vec[i];
+% else:
+    uint32_t X = (uint32_t)(uint8_t)X_vec[i];
+% endif
+    int32_t W = (int32_t)(int8_t)W_vec[i];
 
-    // early return for zeros
     if (X == 0 || W == 0) continue;
 
-    // mapping to the LUT domain
 % if signed:
-    unsigned in_idx = (unsigned)(X + in_bias);
+    unsigned x_negative = (unsigned)(X < 0);
+    unsigned x_mag = (unsigned)(x_negative ? -X : X);
 % else:
-    unsigned in_idx = (unsigned)X;
+    unsigned x_mag = (unsigned)X;
 % endif
-    int w_idx = (unsigned)(W + w_bias);
 
-    int lut_idx = (in_idx << w_bits) + w_idx; 
-    int32_t prod = ((int32_t *)ptr_lut)[lut_idx];
+    unsigned w_negative = (unsigned)(W < 0);
+    unsigned w_mag = (unsigned)(w_negative ? -W : W);
 
+    unsigned lut_idx = x_mag * num_w_mag + w_mag;
+    int32_t prod = ptr_lut[lut_idx];
+
+    // restore the product sign
+% if signed:
+    if (x_negative ^ w_negative)
+% else:
+    if (w_negative)
+% endif
+    {
+      prod = -prod;
+    }
+    
     sum += prod;
   }
 
