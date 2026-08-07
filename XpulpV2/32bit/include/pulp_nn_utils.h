@@ -758,7 +758,7 @@ static void __attribute__((noinline)) pulp_zero_mem(uint8_t * pBuffer, unsigned 
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u2_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 2;
@@ -795,7 +795,7 @@ pulp_nn_look_up_u2_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i2_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 2;
@@ -833,7 +833,7 @@ pulp_nn_look_up_i2_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u2_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 4;
@@ -870,7 +870,7 @@ pulp_nn_look_up_u2_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i2_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 4;
@@ -908,7 +908,7 @@ pulp_nn_look_up_i2_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u2_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 8;
@@ -945,7 +945,7 @@ pulp_nn_look_up_u2_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i2_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 2;
   const unsigned w_bits = 8;
@@ -983,7 +983,7 @@ pulp_nn_look_up_i2_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u4_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 2;
@@ -1020,7 +1020,7 @@ pulp_nn_look_up_u4_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i4_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 2;
@@ -1058,7 +1058,7 @@ pulp_nn_look_up_i4_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u4_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 4;
@@ -1095,7 +1095,7 @@ pulp_nn_look_up_u4_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i4_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 4;
@@ -1133,7 +1133,7 @@ pulp_nn_look_up_i4_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u4_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 8;
@@ -1170,7 +1170,7 @@ pulp_nn_look_up_u4_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i4_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 4;
   const unsigned w_bits = 8;
@@ -1208,7 +1208,7 @@ pulp_nn_look_up_i4_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u8_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 2;
@@ -1245,7 +1245,7 @@ pulp_nn_look_up_u8_i32_i2(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i8_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 2;
@@ -1283,7 +1283,7 @@ pulp_nn_look_up_i8_i32_i2(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u8_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 4;
@@ -1320,7 +1320,7 @@ pulp_nn_look_up_u8_i32_i4(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i8_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 4;
@@ -1358,7 +1358,7 @@ pulp_nn_look_up_i8_i32_i4(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_u8_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 8;
@@ -1395,7 +1395,7 @@ pulp_nn_look_up_u8_i32_i8(const uint8_t *pLUT, v4u X_vec, v4s W_vec, int sum)
 static int __attribute__((noinline)) 
 pulp_nn_look_up_i8_i32_i8(const uint8_t *pLUT, v4s X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = 8;
   const unsigned w_bits = 8;

@@ -619,7 +619,7 @@ vt_in = f"v4{'s' if signed else 'u'}"
 static int __attribute__((noinline)) 
 pulp_nn_look_up_${in_t}_i32_i${w_prec}(const uint8_t *pLUT, ${vt_in} X_vec, v4s W_vec, int sum)
 {
-  const int32_t *ptr_lut = (const int32_t *)pLUT; 
+  const int16_t *ptr_lut = (const int16_t *)pLUT; 
 
   const unsigned in_bits = ${in_prec};
   const unsigned w_bits = ${w_prec};
