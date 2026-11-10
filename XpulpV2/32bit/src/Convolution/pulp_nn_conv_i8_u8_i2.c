@@ -189,16 +189,18 @@ void pulp_nn_conv_i8_u8_i2(
       int i;
       int32_t * k1 = pKappa;
       int32_t * lambda1 = pLambda;
+      // like k1/lambda1: a core with several rows reaches this leftover once per row, each from the first channel
+      int8_t *pBias1 = pBias;
       v4s inA[4];
       v4s inB;
       uint8_t out[1];
       for(i = 0; i < ch_out; i++)
       {
         int sum = 0;
-        if (pBias != NULL)
+        if (pBias1 != NULL)
         {
-          sum = *((int*) pBias);
-          pBias += 4;
+          sum = *((int*) pBias1);
+          pBias1 += 4;
         }
 
         uint8_t *pB = pIm2ColBase;

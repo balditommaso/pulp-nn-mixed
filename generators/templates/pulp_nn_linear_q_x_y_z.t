@@ -83,16 +83,15 @@ void ${config.fn_name}(
     int start = min(chunk * core_id, num_o_neurons);
     int stop = min(start + chunk, num_o_neurons);
 %elif config.kernel.out_data_t == 4:
-    int start = min((chunk << (chunk == 1)) * core_id, num_o_neurons);
-    int stop = min(start + (chunk << (chunk == 1)), num_o_neurons);
+    // with an odd chunk two cores would write the same byte
+    chunk += chunk & 0x1;
+    int start = min(chunk * core_id, num_o_neurons);
+    int stop = min(start + chunk, num_o_neurons);
 %elif config.kernel.out_data_t == 2:
-    int neuron_left = 0;
-    if (chunk & 0x3)
-    {
-        neuron_left = (4 - (chunk & 0x7));
-    }
-    int start = min((chunk + neuron_left) * core_id, num_o_neurons);
-    int stop = min(start + chunk + neuron_left, num_o_neurons);
+    // whole output bytes per core
+    chunk = (chunk + 3) & ~0x3;
+    int start = min(chunk * core_id, num_o_neurons);
+    int stop = min(start + chunk, num_o_neurons);
 %endif
 
 ## declares the vector variables used to hold those packed/unpacked values during computation

@@ -154,6 +154,8 @@ void ${config.fn_name}(
       int i;
       ${act_t} * k1 = pKappa;
       ${act_t} * lambda1 = pLambda;
+      // like k1/lambda1: a core with several rows reaches this leftover once per row, each from the first channel
+      int8_t *pBias1 = pBias;
   %if config.kernel.wt_data_t == 2:
       v4s inA[4];
       ${vt_in} inB;
@@ -169,9 +171,10 @@ void ${config.fn_name}(
       for(i = 0; i < ch_out; i++)
       {
         int sum = 0;
-        if (pBias != NULL)
+        if (pBias1 != NULL)
         {
-          sum = ((int) (*pBias++));
+          sum = *((int*) pBias1);   // int32 bias, as the matmul of the main path reads it
+          pBias1 += 4;
         }
 
         ${pt_in} *pB = (pIn + (i_out_x * ch_in) + (i_out_y * dim_in_x * ch_in));

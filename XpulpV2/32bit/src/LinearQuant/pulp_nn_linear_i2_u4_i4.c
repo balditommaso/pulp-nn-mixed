@@ -27,8 +27,10 @@ void pulp_nn_linear_i2_u4_i4(
     int core_id = pi_core_id();
     int Log2Core = log2(NUM_CORES);
     int chunk = (num_o_neurons >> Log2Core) + ((num_o_neurons & (NUM_CORES-1))!=0);
-    int start = min((chunk << (chunk == 1)) * core_id, num_o_neurons);
-    int stop = min(start + (chunk << (chunk == 1)), num_o_neurons);
+    // with an odd chunk two cores would write the same byte
+    chunk += chunk & 0x1;
+    int start = min(chunk * core_id, num_o_neurons);
+    int stop = min(start + chunk, num_o_neurons);
 
     v4s vecA[4];
     v4s vecB[4];

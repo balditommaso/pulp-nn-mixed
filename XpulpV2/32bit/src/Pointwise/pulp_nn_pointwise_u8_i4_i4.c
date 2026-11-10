@@ -105,15 +105,18 @@ void pulp_nn_pointwise_u8_i4_i4(
       int i;
       int32_t * k1 = pKappa;
       int32_t * lambda1 = pLambda;
+      // like k1/lambda1: a core with several rows reaches this leftover once per row, each from the first channel
+      int8_t *pBias1 = pBias;
       v4s inA[2];
       v4u inB;
       int8_t out[2];
       for(i = 0; i < ch_out; i++)
       {
         int sum = 0;
-        if (pBias != NULL)
+        if (pBias1 != NULL)
         {
-          sum = ((int) (*pBias++));
+          sum = *((int*) pBias1);   // int32 bias, as the matmul of the main path reads it
+          pBias1 += 4;
         }
 
         uint8_t *pB = (pIn + (i_out_x * ch_in) + (i_out_y * dim_in_x * ch_in));

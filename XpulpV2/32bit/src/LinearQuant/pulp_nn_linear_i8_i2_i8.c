@@ -33,13 +33,10 @@ void pulp_nn_linear_i8_i2_i8(
     int core_id = pi_core_id();
     int Log2Core = log2(NUM_CORES);
     int chunk = (num_o_neurons >> Log2Core) + ((num_o_neurons & (NUM_CORES-1))!=0);
-    int neuron_left = 0;
-    if (chunk & 0x3)
-    {
-        neuron_left = (4 - (chunk & 0x7));
-    }
-    int start = min((chunk + neuron_left) * core_id, num_o_neurons);
-    int stop = min(start + chunk + neuron_left, num_o_neurons);
+    // whole output bytes per core
+    chunk = (chunk + 3) & ~0x3;
+    int start = min(chunk * core_id, num_o_neurons);
+    int stop = min(start + chunk, num_o_neurons);
 
     v4s vecA;
     v4s vecB;
