@@ -213,7 +213,7 @@ void ${config.fn_name}(
                        uint16_t dim_im_in_y,
                        uint16_t ch_im_in,
                        int      out_requant_flag);
-%elif config.api=="PULPNNAvgPoolNew":
+%elif config.api in ("PULPNNAvgPoolNew", "PULPNNMaxPoolNew"):
 void ${config.fn_name}(
                        ${pt_in} * pIn,
                        ${pt_out} * pOut,

@@ -180,8 +180,8 @@ void pulp_nn_depthwise_u4_u4_i4(
           int sum2 = 0;
           if (pBias != NULL)
           {
-            sum = ((int) (pBias[i_ch]));
-            sum2 = ((int) (pBias[i_ch + 1]));
+            sum = ((int) (((int32_t *) pBias)[(i_ch << 1)]));
+            sum2 = ((int) (((int32_t *) pBias)[(i_ch << 1) + 1]));
           }
           pIm2Col = (pIm2ColBase + ((l * stride_y) * dim_kernel_x));
           pIm2Col2 = pIm2Col + im2col_size;
@@ -236,7 +236,9 @@ void pulp_nn_depthwise_u4_u4_i4(
         i_out_x++;
       }while((i_out_x * stride_x) < padding_x_left);
     }
-    do
+    // middle columns (no horizontal padding): a while, not a do-while, because there may be none,
+    // e.g. a 2-wide input with padding on both sides, whose 2nd column belongs to the loop below
+    while((i_out_x * stride_x) < ((dim_out_x * stride_x) - padding_x_right))
     {
       uint8_t *pOutBuffer = pOut + i_out_ch + (i_out_x * ch_out_r);
       uint8_t *pIm2Col = pIm2ColBase;
@@ -313,8 +315,8 @@ void pulp_nn_depthwise_u4_u4_i4(
         int sum2 = 0;
         if (pBias != NULL)
         {
-          sum = ((int) (pBias[i_ch]));
-          sum2 = ((int) (pBias[i_ch + 1]));
+          sum = ((int) (((int32_t *) pBias)[(i_ch << 1)]));
+          sum2 = ((int) (((int32_t *) pBias)[(i_ch << 1) + 1]));
         }
         pIm2Col = (pIm2ColBase + ((l * stride_y) * dim_kernel_x));
         pIm2Col2 = pIm2Col + im2col_size;
@@ -367,7 +369,7 @@ void pulp_nn_depthwise_u4_u4_i4(
         l++;
       }while(l<dim_out_y);
       i_out_x++;
-    }while((i_out_x * stride_x) < ((dim_out_x * stride_x) - padding_x_right));
+    }
     for (i_out_x; i_out_x < dim_out_x; i_out_x++)
     {
       uint8_t *pOutBuffer = pOut + i_out_ch + (i_out_x * ch_out_r);
@@ -457,8 +459,8 @@ void pulp_nn_depthwise_u4_u4_i4(
         int sum2 = 0;
         if (pBias != NULL)
         {
-          sum = ((int) (pBias[i_ch]));
-          sum2 = ((int) (pBias[i_ch + 1]));
+          sum = ((int) (((int32_t *) pBias)[(i_ch << 1)]));
+          sum2 = ((int) (((int32_t *) pBias)[(i_ch << 1) + 1]));
         }
         pIm2Col = (pIm2ColBase + ((l * stride_y) * dim_kernel_x));
         pIm2Col2 = pIm2Col + im2col_size;

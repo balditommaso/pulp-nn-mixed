@@ -320,8 +320,29 @@ def main():
                         layer=None
                     )
                     pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
-                        path_tag='avgpool', 
-                        comp=avgp, 
+                        path_tag='avgpool',
+                        comp=avgp,
+                        api=pulp_nn_init.PULPNNAPI
+                    )
+                    # max pooling with in/out precision + requant (same API as avgpool_new)
+                    maxp_new = pulp_nn_factory.PULPNNMaxPoolNew(
+                        kernel=pulp_nn_factory.PULPNNKernel(
+                            name='maxpool_new',
+                            inp=ip,
+                            out=op,
+                            wt=None,
+                            quant=None,
+                            act_prec=a,
+                            ext=e,
+                            mm_fmt='',
+                            in_signed=sgn_in,
+                            out_signed=sgn_out
+                        ),
+                        layer=None
+                    )
+                    pulp_nn_init.PULPNNAPI = pulp_nn_factory.kernel(
+                        path_tag='maxpool',
+                        comp=maxp_new,
                         api=pulp_nn_init.PULPNNAPI
                     )
 
@@ -376,5 +397,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()

@@ -784,6 +784,24 @@ class PULPNNAvgPoolNew(PULPNNFactory):
     def generate_code(self):
         return Template(filename="templates/pulp_nn_avgpool_new.t", strict_undefined=True).render(config=self)
 
+class PULPNNMaxPoolNew(PULPNNFactory):
+    # max pooling with in/out precision and requantization, same API as PULPNNAvgPoolNew
+    def __init__(self, kernel, layer):
+        super().__init__(kernel, layer)
+        self.fn_name = "pulp_nn_maxpool_{}{}_{}{}".format(
+            sgn_str(kernel.in_signed),
+            str(self.kernel.in_data_t),
+            sgn_str(kernel.out_signed),
+            str(self.kernel.out_data_t)
+        )
+        if 'XpulpNN' in self.kernel.extentions:
+            self.fn_name = "x"+self.fn_name
+        self.filename = self.fn_name + ".c"
+        self.api = self.__class__.__name__
+
+    def generate_code(self):
+        return Template(filename="templates/pulp_nn_maxpool_new.t", strict_undefined=True).render(config=self)
+
 
 class PULPNNAdd(PULPNNFactory):
     def __init__(self, kernel, layer):

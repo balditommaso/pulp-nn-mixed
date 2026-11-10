@@ -106,8 +106,15 @@ static ${rt} __attribute__((noinline)) pulp_nn${"_bn" if bn else ""}_quant_${dst
   int8_t d
   ) {
   % if bn:
-  ${act_t} integer_image_phi = (k * phi) + lambda;
-  ${act_t} x = (integer_image_phi) >> d;
+  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
+  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
+  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
+  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
+  ${act_t} x;
+  if (d >= 33)
+    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
+  else
+    x = (${act_t}) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
   % else:
   int32_t x = (m * phi) >> d;
   % endif

@@ -25633,7 +25633,51 @@ void pulp_nn_avgpool_u8_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u8_u8(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u8_i8(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u8_i8(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25677,7 +25721,51 @@ void pulp_nn_avgpool_i8_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i8_u8(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i8_i8(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i8_i8(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25721,7 +25809,51 @@ void pulp_nn_avgpool_u8_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u8_u4(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u8_i4(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u8_i4(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25765,7 +25897,51 @@ void pulp_nn_avgpool_i8_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i8_u4(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i8_i4(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i8_i4(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25809,7 +25985,51 @@ void pulp_nn_avgpool_u8_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u8_u2(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u8_i2(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u8_i2(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25853,7 +26073,51 @@ void pulp_nn_avgpool_i8_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i8_u2(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i8_i2(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i8_i2(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25897,7 +26161,51 @@ void pulp_nn_avgpool_u4_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u4_u8(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u4_i8(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u4_i8(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25941,7 +26249,51 @@ void pulp_nn_avgpool_i4_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i4_u8(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i4_i8(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i4_i8(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -25985,7 +26337,51 @@ void pulp_nn_avgpool_u4_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u4_u4(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u4_i4(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u4_i4(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26029,7 +26425,51 @@ void pulp_nn_avgpool_i4_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i4_u4(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i4_i4(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i4_i4(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26073,7 +26513,51 @@ void pulp_nn_avgpool_u4_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u4_u2(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u4_i2(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u4_i2(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26117,7 +26601,51 @@ void pulp_nn_avgpool_i4_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i4_u2(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i4_i2(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i4_i2(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26161,7 +26689,51 @@ void pulp_nn_avgpool_u2_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u2_u8(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u2_i8(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u2_i8(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26205,7 +26777,51 @@ void pulp_nn_avgpool_i2_u8(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i2_u8(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i2_i8(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i2_i8(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26249,7 +26865,51 @@ void pulp_nn_avgpool_u2_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u2_u4(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u2_i4(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u2_i4(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26293,7 +26953,51 @@ void pulp_nn_avgpool_i2_u4(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i2_u4(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i2_i4(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i2_i4(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26337,7 +27041,51 @@ void pulp_nn_avgpool_u2_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_u2_u2(
+                       uint8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_u2_i2(
+                       uint8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_u2_i2(
                        uint8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
@@ -26381,7 +27129,51 @@ void pulp_nn_avgpool_i2_u2(
                        int flag_requant
 );
 
+void pulp_nn_maxpool_i2_u2(
+                       int8_t * pIn,
+                       uint8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
 void pulp_nn_avgpool_i2_i2(
+                       int8_t * pIn,
+                       int8_t * pOut,
+                       int32_t lambda,
+                       uint16_t out_shift,
+                       int32_t out_add,
+                       uint16_t dim_im_in_x,
+                       uint16_t dim_im_in_y,
+                       uint16_t ch_im_in,
+                       uint16_t dim_im_out_x,
+                       uint16_t dim_im_out_y,
+                       uint16_t dim_kernel_x,
+                       uint16_t dim_kernel_y,
+                       uint16_t padding_t,
+                       uint16_t padding_b,
+                       uint16_t padding_l,
+                       uint16_t padding_r,
+                       uint16_t stride_x,
+                       uint16_t stride_y,
+                       int flag_requant
+);
+
+void pulp_nn_maxpool_i2_i2(
                        int8_t * pIn,
                        int8_t * pOut,
                        int32_t lambda,
