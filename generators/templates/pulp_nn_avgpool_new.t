@@ -100,7 +100,7 @@ byte_chan_shift_diff = byte_chan_shift_out - byte_chan_shift_in
 
 
   uint32_t kernel_size_tot = dim_kernel_x * dim_kernel_y;
-  lambda = lambda/kernel_size_tot;
+  // requant: lambda = k of the fixed-point multiplier with the 1/kernel_size_tot already folded in (DORY frontend)
   int ch_im_in_r = ch_im_in >> ${byte_chan_shift_in};
   int ch_im_out_r = ch_im_in >> ${byte_chan_shift_out};
   ${sum_t} sum[${els_per_byte_in}] = {0};
@@ -159,7 +159,7 @@ cur_mask_shift = c * dw_in
                 ${act_t} out_large;
                 if (flag_requant) {
                   % for c in range(els_per_byte_in):
-                  out_large = (sum[${c}] * lambda + out_add) >> out_shift;
+                  out_large = pulp_nn_requant(sum[${c}], lambda, out_add, out_shift);
                   % if not wr_not_in_every_iter:
                     % if els_per_byte_out == 1:
                   out_el = ${out_clip_fn}(out_large);

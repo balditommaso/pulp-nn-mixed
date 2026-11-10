@@ -1,7 +1,7 @@
 /*
  * pulp_nn_maxpool_i8_i8.c
  * Max pooling with mixed input/output precision and optional requantization
- * (out = clip((max * lambda + out_add) >> out_shift)), same API as pulp_nn_avgpool_new.t
+ * (out = clip(pulp_nn_requant(max, lambda, out_add, out_shift))), same API as pulp_nn_avgpool_new.t
  * by Georg Rutishauser <georgr@iis.ee.ethz.ch>, from which it is derived.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,7 +102,7 @@ void __attribute__ ((noinline))  pulp_nn_maxpool_i8_i8(
                     }
                 }
                 int32_t out_large;
-                out_large = flag_requant ? ((maxv[0] * lambda + out_add) >> out_shift) : maxv[0];
+                out_large = flag_requant ? pulp_nn_requant(maxv[0], lambda, out_add, out_shift) : maxv[0];
                 out_el = clips8(out_large);
                 pDst[(ch_cnt >> (0)) + 0] = out_el;
                 pTmp++;

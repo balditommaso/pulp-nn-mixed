@@ -1,7 +1,7 @@
 /*
  * ${config.filename}
  * Max pooling with mixed input/output precision and optional requantization
- * (out = clip((max * lambda + out_add) >> out_shift)), same API as pulp_nn_avgpool_new.t
+ * (out = clip(pulp_nn_requant(max, lambda, out_add, out_shift))), same API as pulp_nn_avgpool_new.t
  * by Georg Rutishauser <georgr@iis.ee.ethz.ch>, from which it is derived.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -146,7 +146,7 @@ byte_chan_shift_diff = byte_chan_shift_out - byte_chan_shift_in
                 }
                 ${act_t} out_large;
 % for c in range(els_per_byte_in):
-                out_large = flag_requant ? ((maxv[${c}] * lambda + out_add) >> out_shift) : maxv[${c}];
+                out_large = flag_requant ? pulp_nn_requant(maxv[${c}], lambda, out_add, out_shift) : maxv[${c}];
   % if not wr_not_in_every_iter:
     % if c % els_per_byte_out == 0:
                 out_el = ${out_clip_fn}(out_large);

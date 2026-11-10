@@ -74,6 +74,17 @@
 #define W_STRIDE(x)                                          asm volatile ("csrw 0x103, %0":: "r" (x))
 #define A_ROLLBACK(x)                                        asm volatile ("csrw 0x104, %0":: "r" (x))
 #define W_ROLLBACK(x)                                        asm volatile ("csrw 0x105, %0":: "r" (x))
+
+// Requantization of every DORY layer: Jacob et al. 2018 (arXiv:1712.05877, eq. 6), k = M0 in [2^30, 2^31) and
+// d = 31 + n, i.e. M = k * 2^-d; returns round(k * phi / 2^d) + lambda (lambda = output zero point), not clipped.
+// For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
+// the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
+static inline int32_t pulp_nn_requant(int32_t phi, int32_t k, int32_t lambda, int d)
+{
+  if (d >= 33)
+    return (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
+  return (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+}
 #define A_SKIP(x)                                            asm volatile ("csrwi 0x106," x)
 #define W_SKIP(x)                                            asm volatile ("csrwi 0x107," x)
 
@@ -92,15 +103,7 @@ static uint8_t __attribute__((noinline)) pulp_nn_bn_quant_u2 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   uint8_t res = clip2(x);
   return res;
 }
@@ -132,15 +135,7 @@ static int8_t __attribute__((noinline)) pulp_nn_bn_quant_i2 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   int8_t res = clips2(x);
   return res;
 }
@@ -172,15 +167,7 @@ static uint8_t __attribute__((noinline)) pulp_nn_bn_quant_u4 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   uint8_t res = clip4(x);
   return res;
 }
@@ -212,15 +199,7 @@ static int8_t __attribute__((noinline)) pulp_nn_bn_quant_i4 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   int8_t res = clips4(x);
   return res;
 }
@@ -252,15 +231,7 @@ static uint8_t __attribute__((noinline)) pulp_nn_bn_quant_u8 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   uint8_t res = clip8(x);
   return res;
 }
@@ -292,15 +263,7 @@ static int8_t __attribute__((noinline)) pulp_nn_bn_quant_i8 (
   int32_t lambda,
   int8_t d
   ) {
-  // Jacob et al. 2018 (arXiv:1712.05877, eq. 6): k = M0 in [2^30, 2^31) and d = 31 + n, i.e. M = k * 2^-d;
-  // x = round(k * phi / 2^d) + lambda, lambda = output zero point.
-  // For d >= 33 (M < 0.25, most conv/FC layers) the low word of the 32x32 product can never carry into
-  // the result: one mulh, then add + shift (p.addnr). Larger M (d <= 32) needs the full product.
-  int32_t x;
-  if (d >= 33)
-    x = (((int32_t) (((int64_t) k * phi) >> 32) + (1 << (d - 33))) >> (d - 32)) + lambda;
-  else
-    x = (int32_t) ((((int64_t) k * phi) + ((int64_t) 1 << (d - 1))) >> d) + lambda;
+  int32_t x = pulp_nn_requant(phi, k, lambda, d);
   int8_t res = clips8(x);
   return res;
 }

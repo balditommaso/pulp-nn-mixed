@@ -65,7 +65,7 @@ void __attribute__ ((noinline))  pulp_nn_avgpool_u8_i8(
 
 
   uint32_t kernel_size_tot = dim_kernel_x * dim_kernel_y;
-  lambda = lambda/kernel_size_tot;
+  // requant: lambda = k of the fixed-point multiplier with the 1/kernel_size_tot already folded in (DORY frontend)
   int ch_im_in_r = ch_im_in >> 0;
   int ch_im_out_r = ch_im_in >> 0;
   uint32_t sum[1] = {0};
@@ -105,7 +105,7 @@ void __attribute__ ((noinline))  pulp_nn_avgpool_u8_i8(
                 }
                 int32_t out_large;
                 if (flag_requant) {
-                  out_large = (sum[0] * lambda + out_add) >> out_shift;
+                  out_large = pulp_nn_requant(sum[0], lambda, out_add, out_shift);
                   out_el = clips8(out_large);
                   pDst[(ch_cnt >> (0)) + 0] = out_el;
                   } else {

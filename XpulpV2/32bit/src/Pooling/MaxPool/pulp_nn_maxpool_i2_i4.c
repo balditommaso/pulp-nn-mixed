@@ -1,7 +1,7 @@
 /*
  * pulp_nn_maxpool_i2_i4.c
  * Max pooling with mixed input/output precision and optional requantization
- * (out = clip((max * lambda + out_add) >> out_shift)), same API as pulp_nn_avgpool_new.t
+ * (out = clip(pulp_nn_requant(max, lambda, out_add, out_shift))), same API as pulp_nn_avgpool_new.t
  * by Georg Rutishauser <georgr@iis.ee.ethz.ch>, from which it is derived.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -108,14 +108,14 @@ void __attribute__ ((noinline))  pulp_nn_maxpool_i2_i4(
                     }
                 }
                 int32_t out_large;
-                out_large = flag_requant ? ((maxv[0] * lambda + out_add) >> out_shift) : maxv[0];
+                out_large = flag_requant ? pulp_nn_requant(maxv[0], lambda, out_add, out_shift) : maxv[0];
                 out_el = clips4(out_large);
-                out_large = flag_requant ? ((maxv[1] * lambda + out_add) >> out_shift) : maxv[1];
+                out_large = flag_requant ? pulp_nn_requant(maxv[1], lambda, out_add, out_shift) : maxv[1];
                 out_el = bitins(out_el, (int8_t) 0x0f, (int8_t) clips4(out_large), (int8_t) 0xf0, 4);
                 pDst[(ch_cnt << (1)) + 0] = out_el;
-                out_large = flag_requant ? ((maxv[2] * lambda + out_add) >> out_shift) : maxv[2];
+                out_large = flag_requant ? pulp_nn_requant(maxv[2], lambda, out_add, out_shift) : maxv[2];
                 out_el = clips4(out_large);
-                out_large = flag_requant ? ((maxv[3] * lambda + out_add) >> out_shift) : maxv[3];
+                out_large = flag_requant ? pulp_nn_requant(maxv[3], lambda, out_add, out_shift) : maxv[3];
                 out_el = bitins(out_el, (int8_t) 0x0f, (int8_t) clips4(out_large), (int8_t) 0xf0, 4);
                 pDst[(ch_cnt << (1)) + 1] = out_el;
                 pTmp++;

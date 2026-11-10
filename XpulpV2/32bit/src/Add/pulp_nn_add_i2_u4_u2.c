@@ -117,19 +117,19 @@ void __attribute__ ((noinline)) pulp_nn_add_i2_u4_u2(
 #endif
 
         if (out_requant_flag) {
-          sum1 = (sum1 * out_mul + out_add) >> out_shift;
+          sum1 = pulp_nn_requant(sum1, out_mul, out_add, out_shift);
 #ifdef ADD_VERBOSE
           printf("core %d - requantized sum1: %d\n", core_id, sum1);
 #endif
-          sum2 = (sum2 * out_mul + out_add) >> out_shift;
+          sum2 = pulp_nn_requant(sum2, out_mul, out_add, out_shift);
 #ifdef ADD_VERBOSE
           printf("core %d - requantized sum2: %d\n", core_id, sum2);
 #endif
-          sum3 = (sum3 * out_mul + out_add) >> out_shift;
+          sum3 = pulp_nn_requant(sum3, out_mul, out_add, out_shift);
 #ifdef ADD_VERBOSE
           printf("core %d - requantized sum3: %d\n", core_id, sum3);
 #endif
-          sum4 = (sum4 * out_mul + out_add) >> out_shift;
+          sum4 = pulp_nn_requant(sum4, out_mul, out_add, out_shift);
 #ifdef ADD_VERBOSE
           printf("core %d - requantized sum4: %d\n", core_id, sum4);
 #endif

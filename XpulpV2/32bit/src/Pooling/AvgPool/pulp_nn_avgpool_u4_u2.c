@@ -65,7 +65,7 @@ void __attribute__ ((noinline))  pulp_nn_avgpool_u4_u2(
 
 
   uint32_t kernel_size_tot = dim_kernel_x * dim_kernel_y;
-  lambda = lambda/kernel_size_tot;
+  // requant: lambda = k of the fixed-point multiplier with the 1/kernel_size_tot already folded in (DORY frontend)
   int ch_im_in_r = ch_im_in >> 1;
   int ch_im_out_r = ch_im_in >> 2;
   uint32_t sum[2] = {0};
@@ -113,9 +113,9 @@ void __attribute__ ((noinline))  pulp_nn_avgpool_u4_u2(
                 }
                 int32_t out_large;
                 if (flag_requant) {
-                  out_large = (sum[0] * lambda + out_add) >> out_shift;
+                  out_large = pulp_nn_requant(sum[0], lambda, out_add, out_shift);
                     out_el |= (clip2(out_large)  << (in_iter_cnt * 4 + 0));
-                  out_large = (sum[1] * lambda + out_add) >> out_shift;
+                  out_large = pulp_nn_requant(sum[1], lambda, out_add, out_shift);
                     out_el |= (clip2(out_large)  << (in_iter_cnt * 4 + 2));
                   } else {
                   out_large = sum[0] / kernel_size_tot;

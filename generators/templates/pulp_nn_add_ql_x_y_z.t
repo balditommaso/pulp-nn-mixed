@@ -143,7 +143,7 @@ byte_chan_shift_out = int(np.log2(els_per_byte_out))
 
         if (out_requant_flag) {
         % for pp in range(4):
-          sum${pp+1} = (sum${pp+1} * out_mul + out_add) >> out_shift;
+          sum${pp+1} = pulp_nn_requant(sum${pp+1}, out_mul, out_add, out_shift);
 #ifdef ADD_VERBOSE
           printf("core %d - requantized sum${pp+1}: %d\n", core_id, sum${pp+1});
 #endif
