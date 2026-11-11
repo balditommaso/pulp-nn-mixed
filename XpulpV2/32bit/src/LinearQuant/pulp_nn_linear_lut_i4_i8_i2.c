@@ -146,6 +146,11 @@ void pulp_nn_linear_lut_i4_i8_i2(
             pulp_nn_i4_to_i8(pA,vecA);
             pA+=4;
             pulp_nn_i4_to_i8(pA,vecA + 2);
+            pulp_nn_i2_to_i8(pB,vecB);
+            sum = pulp_nn_look_up_i4_i32_i2(pLUT, vecA[0], vecB[0], sum);
+            sum = pulp_nn_look_up_i4_i32_i2(pLUT, vecA[1], vecB[1], sum);
+            sum = pulp_nn_look_up_i4_i32_i2(pLUT, vecA[2], vecB[2], sum);
+            sum = pulp_nn_look_up_i4_i32_i2(pLUT, vecA[3], vecB[3], sum);
             pA+=4;
             pB+=4;
         }

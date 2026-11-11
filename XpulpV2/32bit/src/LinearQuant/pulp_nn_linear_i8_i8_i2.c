@@ -155,6 +155,11 @@ void pulp_nn_linear_i8_i8_i2(
             vecA[2] = *((v4s*)pA);
             pA+=4;
             vecA[3] = *((v4s*)pA);
+            pulp_nn_i2_to_i8(pB,vecB);
+            sum = SumDotps4(vecA[0], vecB[0], sum);
+            sum = SumDotps4(vecA[1], vecB[1], sum);
+            sum = SumDotps4(vecA[2], vecB[2], sum);
+            sum = SumDotps4(vecA[3], vecB[3], sum);
             pA+=4;
             pB+=4;
         }

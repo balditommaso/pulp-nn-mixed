@@ -717,6 +717,7 @@ void ${config.fn_name}(
             ${config.unpack_in_fn}(pA,vecA + 2);
 %elif config.kernel.in_data_t == 2:
             ${config.unpack_in_fn}(pA,vecA);
+%endif
 %if config.kernel.wt_data_t == 8:
             vecB[0] = *((v4s*)pB);
             pB+=4;
@@ -736,7 +737,6 @@ void ${config.fn_name}(
             sum = ${compute_fn}vecA[1], vecB[1], sum);
             sum = ${compute_fn}vecA[2], vecB[2], sum);
             sum = ${compute_fn}vecA[3], vecB[3], sum);
-%endif
 %endif
             pA+=4;
             pB+=4;
