@@ -1,8 +1,3 @@
-
-################################# Mixed Precision Convolution kernels generator script ##########################
-
-############################################################### Version 1.0 #########################################################
-
 from include import pulp_nn_factory, pulp_nn_init, pulp_nn_struct
 from itertools import product
 
